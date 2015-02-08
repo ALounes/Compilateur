@@ -1,0 +1,9 @@
+#! /bin/bash
+clear
+rm -f *~
+rm emv
+rm -f resultat_e1.txt
+rm -f resultat_e2.txt
+rm -f erreur.txt
+clear
+echo Remove Done ....
