@@ -207,6 +207,11 @@ void run()
 			}
 			case OP_CONT:	{
 			   i = pile[sp];
+				if ((i <= -1) || (i > sp))
+				{
+					printf("ERREUR INSTRUCTION CONT : le sommet de la pile doit contenir l'adresse d'une cellule memoire \n")
+					exit(1);
+				}
 		      pile[sp] = pile[i];
 		      pc++; 
 				printf("CONT\n");
