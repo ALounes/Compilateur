@@ -70,27 +70,33 @@ void run()
 		//printf("%d ",codeSegment[pc]);
 		switch (codeSegment[pc])
 		{
-			case OP_ADD: {
-				pile[sp-1]=pile[sp-1]+pile[sp]; 
-				sp-- ; pc++ ; 
+			case OP_ADD: 
+			{
 				printf("ADD\n");
-				printf("Instruction suivante : %d",codeSegment[pc]);
+				pile[sp-1]=pile[sp-1]+pile[sp]; 
+				sp-- ; pc++ ;
 				break;
 			}
 
-         case OP_SUB: {
+         case OP_SUB: 
+			{
+				printf("SUB\n");
             pile[sp-1]=pile[sp-1]-pile[sp]; 
-				sp-- ; pc++ ; break;
+				sp--; pc++; 
+				break;
 			}
 			
-			case OP_MULT:	{
+			case OP_MULT:	
+			{
+				printf("MULT\n");
 		      pile[sp-1]=pile[sp-1]*pile[sp]; 
 				sp-- ; pc++ ; 
-				printf("MULT\n");
 				break;
 			}
 				
-		   case OP_DIV:	{
+		   case OP_DIV:	
+			{
+				printf("DIV\n");
 		      if (pile[sp] == 0)
 		      {
 		         printf("Erreur : Division par 0\n");
@@ -99,83 +105,94 @@ void run()
 		      
 		      pile[sp-1]=pile[sp-1]/pile[sp]; 
 				sp-- ; pc++ ; 
-				
 				break;
 			}	
 			
-			case OP_NEG:	{
-		      pile[sp]=-pile[sp]; 
-				pc++; 
+			case OP_NEG:	
+			{
 				printf("NEG\n");
+		      pile[sp] = -pile[sp]; 
+				pc++; 
 				break;
 			}
 			
-			case OP_AND:	{
+			case OP_AND:	
+			{
+				printf("AND\n");
 		      pile[sp-1] = pile[sp]&&pile[sp-1]; 
-		      sp--;
-				pc++; 
-				printf("AND\n");
+		      sp--; pc++; 
 				break;
 			}
-			case OP_OR:	{
+
+			case OP_OR:	
+			{
+				printf("AND\n");
 		      pile[sp-1]=pile[sp]||pile[sp-1]; 
-		      sp--;
-				pc++; 
-				printf("AND\n");
+		      sp--; pc++; 
 				break;
 			}
-			case OP_NOT:	{
-		      pile[sp] = !(pile[sp]) ;
-		      // pile[sp] = 
-				pc++; 
+
+			case OP_NOT:	
+			{
 				printf("NOT\n");
+		      pile[sp] = !(pile[sp]);
+				pc++; 
 				break;
 			}
-			case OP_EQ:	{
-		      pile[sp-1]= (pile[sp] == pile[sp-1]); 
-		      sp--;
-				pc++; 
+
+			case OP_EQ:	
+			{
 				printf("EQ\n");
+		      pile[sp-1]= (pile[sp] == pile[sp-1]); 
+		      sp--; pc++; 
 				break;
 			}
-			case OP_LS:	{
-		      pile[sp-1]= (pile[sp]>pile[sp-1]); 
-		      sp--;
-				pc++; 
+
+			case OP_LS:
+			{
 				printf("LS\n");
+		      pile[sp-1]= (pile[sp]>pile[sp-1]); 
+		      sp--; pc++; 
 				break;
 			}
-			case OP_GT:	{
-		      pile[sp-1]=(pile[sp]<pile[sp-1]); 
-		      sp--;
-				pc++; 
+
+			case OP_GT:	
+			{
 				printf("GT\n");
+		      pile[sp-1]=(pile[sp]<pile[sp-1]); 
+		      sp--; pc++; 
 				break;
 			}
-			case OP_INC:	{
+
+			case OP_INC:	
+			{
+				printf("INC\n");
 		      pile[sp-1]=pile[sp]||pile[sp-1]; 
 		      sp += codeSegment[pc+1];
 				pc += 2; 
-				printf("INC\n");
 				break;
 			}
-			case OP_DEC:	{
+
+			case OP_DEC:	
+			{
+				printf("INC\n");
 		      pile[sp-1]=pile[sp]||pile[sp-1]; 
 		      sp -= codeSegment[pc+1];
 				pc += 2; 
-				printf("INC\n");
 				break;
 			}
 			
-			case OP_PUSH:	{
+			case OP_PUSH:	
+			{
+				printf("PUSH\n");
 		      pile[sp+1]=codeSegment[pc+1]; 
 				sp++ ; pc += 2; 
-				printf("PUSH\n");
 				break;
 			}
 			
-			case OP_PUSHR:	{
-			
+			case OP_PUSHR:	
+			{			
+				printf("PUSHR\n");
 				i = 0;
 				while (codeSegment[pc+1+i] != 0)
 				{
@@ -184,51 +201,58 @@ void run()
 				}
 				strReal[i] = '\0';
 				pile[sp+1] = strtof(strReal,NULL);
-				
 				sp++;
 				pc += i + 2;
-				
-				printf("PUSHR\n");
 				break;
 			}
-			case OP_LIBP:	{
+
+			case OP_LIBP:	
+			{
+				printf("LIBP\n");
 		      pile[sp+1] = bp + codeSegment[pc+1];   
 				sp++ ; pc += 2; 
-				printf("LIBP\n");
 				break;
 			}
 			
-			case OP_DUPL:	{
-		      pile[sp+1] = pile[sp];   
-				sp++ ; 
-				pc++; 
+			case OP_DUPL:	
+			{
 				printf("DUPL\n");
+		      pile[sp+1] = pile[sp];   
+				sp++; pc++; 
 				break;
 			}
-			case OP_CONT:	{
+			case OP_CONT:	
+			{
+				printf("CONT\n");
 			   i = pile[sp];
 				if ((i <= -1) || (i > sp))
 				{
-					printf("ERREUR INSTRUCTION CONT : le sommet de la pile doit contenir l'adresse d'une cellule memoire \n")
+					printf("ERREUR: le sommet de la pile doit contenir l'adresse d'une cellule memoire\n");
 					exit(1);
 				}
 		      pile[sp] = pile[i];
 		      pc++; 
-				printf("CONT\n");
 				break;
 			}
-			case OP_MOVE:	{
+
+			case OP_MOVE:	
+			{
+				printf("MOVE\n");
 			   addr = pile[sp-codeSegment[pc+1]-1];
 			   
 			   for (i = 0; i < codeSegment[pc+1]; i++)
 			   {
 			      pile[addr-i] = pile[sp-i] ; 
 			   }
-				sp -= (codeSegment[pc+1] + 1) ; pc += 2; 
-				printf("MOVE\n");
+
+				sp -= (codeSegment[pc+1] + 1) ; 
+				pc += 2; 
 				break;
 			}
-			case OP_COPY:	{
+
+			case OP_COPY:	
+			{
+				printf("COPY\n");
 			   addr = pile[sp];
 			   
 			   for (i = 0; i < codeSegment[pc+1]; i++)
@@ -236,41 +260,51 @@ void run()
 			      pile[sp + i] = pile[addr - codeSegment[pc+1] + 1 + i] ; 
 			   }
 			   
-				sp += (codeSegment[pc+1] - 1) ; pc += 2; 
-				printf("COPY\n");
+				sp += (codeSegment[pc+1] - 1) ; 
+				pc += 2; 
 				break;
 			}
-			case OP_JP:	{ 
+
+			case OP_JP:	
+			{
+				printf("JP\n"); 
 				pc = codeSegment[pc+1]; 
-				printf("JP\n");
 				break;
 			}
-			case OP_JF:	{ 
+
+			case OP_JF:	
+			{
+				printf("JF\n"); 
 			   if (pile[sp] == 0)
 			   {
 			      pc = codeSegment[pc+1];
 			   }
-				else {
+				else 
+				{
 				   pc += 2;
 				}
 				sp--; 
-				printf("JF\n");
 				break;
 			}
-			case OP_JL:	{ 
+
+			case OP_JL:	
+			{
+				printf("JL\n"); 
 			   if (pile[sp] > pile[sp-1])
 			   {
 			      pc = codeSegment[pc+1];
 			   }
-				else {
+				else 
+				{
 				   pc += 2;
 				}
 				sp -= 2; 
-				printf("JL\n");
 				break;
 			}
 			
-			case OP_JG:	{ 
+			case OP_JG:	
+			{
+				printf("JG\n"); 
 			   if (pile[sp] < pile[sp-1])
 			   {
 			      pc = codeSegment[pc+1];
@@ -279,85 +313,80 @@ void run()
 				   pc += 2;
 				}
 				sp -= 2; 
-				printf("JG\n");
 				break;
 			}
 			
-			case OP_CALL:	{ 
+			case OP_CALL:	
+			{ 
+				printf("CALL\n");
 			   pile[sp+1] = pc+2;
 			   pc = codeSegment[pc+1];
 				sp++; 
-				printf("CALL\n");
 				break;
 			}
 			
-			case OP_RET:	{ 
+			case OP_RET:	
+			{
+				printf("RET\n"); 
 			   pc = pile[sp];
 				sp--; 
-				printf("RET\n");
 				break;
 			}
 		
 		   // INSTRUCTIONS E-S
 			
-			case OP_INPUT:	{
+			case OP_INPUT:	
+			{
 				printf("INPUT : ");
 				i = pile[sp];
 			   scanf("%f",&pile[i]);
-				sp-- ; pc++ ; 
-
+				sp--; pc++ ; 
 				break;
 			}
 			
-			case OP_OUTPUT:	{
+			case OP_OUTPUT:	
+			{
 			   printf("Output : %3.2f\n",pile[sp]);
-				sp-- ; pc++ ; 
+				sp--; pc++ ; 
 				break;
 			}
 			
-			case OP_OUTCHAR:	{
-			
+			case OP_OUTCHAR:	
+			{			
+				printf("OUTCHAR\n");
 			   i = 0;
-				while (codeSegment[pc+1+i] != 0)
+				while (codeSegment[pc+i+1] != 0)
 				{
-				   printf("%c",codeSegment[pc+1+i]);
+				   printf("%c",codeSegment[pc+i+1]);
 				   i++;
 				}
-
-				
+	
 				pc += i + 2;
-				printf("\nOUTCHAR, PC : %d\n",strtof(strReal,NULL),pc);
-			
-			
-			   //printf("Outchar : %3.2f\n",pile[sp]);
-				//sp-- ; pc++ ; 
-				//printf("Instruction suivante : %d",codeSegment[pc]);
 				break;
 			}
 			
-			case OP_SAVEBP:	{ 
+			case OP_SAVEBP:	
+			{
+				printf("SAVEBP\n"); 
 			   pile[sp+1] = bp;
 				sp++; 
-				pc++;
-				printf("SAVEBP\n");
-				break;
+				pc++;				break;
 			}
-			case OP_RSTRBP:	{ 
+			case OP_RSTRBP:	
+			{
+				printf("RSTRBP\n"); 
 			   bp = pile[sp];
 				sp--; 
 				pc++;
-				printf("RSTRBP\n");
 				break;
 			}
-			
-			// add code here
    
 			default:
 				printf("Instruction non reconnue\n");
 				exit(1);
 		}
 		//printExecStack();
-		printPile();
+		//printPile();
 	}
 }
 
@@ -380,6 +409,7 @@ int main(int argc, char **argv)
 		
 		exit(1);
 	}
+
    readAssembly(fin);
    fclose(fin);
    pc = 0;
