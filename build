@@ -1,4 +1,4 @@
 #! /bin/bash
 gcc -Wall -o evm evm.c -ggdb
-gcc -Wall -o asm asm.c
-gcc -Wall -o ast ast.c
+# gcc -Wall -o asm asm.c
+# gcc -Wall -o ast ast.c
