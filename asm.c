@@ -25,6 +25,11 @@ int currentInst;
 // Q1 : Ecrire le code
 void addCode(int v)
 {
+	if((currentInst >= MAX_CODESEGMENT_SIZE) || (currentInst < 0))
+	{
+		printf("\nERREUR : Out of Bound in codeSegment[] \n");
+		exit(1);
+	}
    codeSegment[currentInst] = v;
    currentInst++;
 }

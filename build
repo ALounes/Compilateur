@@ -1,6 +1,6 @@
 #! /bin/bash
-gcc -Wall -o evm evm.c -ggdb
-# gcc -Wall -o asm asm.c
+#gcc -Wall -o evm evm.c -ggdb
+gcc  -o asm asm.c
 # gcc -Wall -o ast ast.c
 #touch resultat_e1.txt
 #touch resultat_e2.txt
