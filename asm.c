@@ -141,22 +141,23 @@ struct label {
 	char *label;
 	int addr;
 } tabLabels[MAX_LABELS_SIZE]; 
+
 int currentLabel;
 
 // Q3 : Ecrire le code
 int findLabel(char *labelname)
 {
    int i = 0;
-   while ((labelname != tabLabels[i].label)||(i < currentLabel))
+   while ((strcmp(labelname,tabLabels[i].label)!=0) || (i < currentLabel))
    {
       i++;
    }
-   if (labelname == tabLabels[i].label)
-   {
-      // on a parcouru tout le tableau sans rien trouver
+   if (strcmp(labelname,tabLabels[i].label) == 0)
+	{
+		// i represente l'indice du label dans la table
       return i;
    }
-   
+	// on a parcouru tout le tableau sans rien trouver   
    return -1;
 }
 
