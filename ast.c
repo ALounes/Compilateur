@@ -13,14 +13,16 @@ nodeType *createNumericNode(float v)
 {
 	nodeType *p = NULL;
 
-	p = (*nodeType)malloc(sizeof(nodeType));
+	p = (nodeType*)malloc(sizeof(nodeType));
 	if (p == NULL){
 		printf("ERREUR : echec allocation memoire ");
 		exit(1);
 	}	 
 
-	p->valeur = v ;
-
+	p->type = typeNumeric ;
+	p->digraphNode = countDigraph; // POUR DOT ??? QUE FAIRE ?
+	p->t_numeric.valeur = v ;
+	
 	return p;
 }
 
@@ -30,13 +32,45 @@ nodeType *createNumericNode(float v)
 // et ... represente la liste des noeuds fils, fils0 jusqu'a fils_nops-1
 nodeType *createOperatorNode(int oper, int nops, ...) 
 {
-    	va_list ap;
-    	nodeType *p;
-    	int i;
+	va_list ap;
+	nodeType *p;
+	int i;
 
-	// add core here
+	// Alocation memoire pour le noeud 
+	p = (nodeType*)malloc(sizeof(nodeType));
+	if (p == NULL){
+		printf("ERREUR : echec allocation memoire ");
+		exit(1);
+	}	 	
+ 
+	// Le noeud est de type operateur 
+	p->type = typeOperator ;
 
-    	return p;
+	// ?????????
+	p->digraphNode = countDigraph; // POUR DOT ??? QUE FAIRE ?
+
+	// affectation de la valeur de l'operateur 
+	p->t_oper.oper = oper;
+	// affectation du nombre de fils
+	p->t_oper.nOperands = nops;
+
+
+	// alocation memoire d'un tableau de pointeur sur des noeuds
+	p->t_oper.op = (nodeType**)malloc(nops*sizeof(nodeType*));
+	if (p->t_oper.op == NULL){
+		printf("ERREUR : echec allocation memoire ");
+		exit(1);
+	}
+
+	va_start(ap, nops);
+	for(i=0; i<nops; i++)
+	{
+		p->t_oper.op[i] = va_arg(ap, nodeType*);
+	}
+
+	va_end(ap);
+
+	return p;
 }
 
 // Q3 : Ecrire la fonction, recursive, qui permet de generer
