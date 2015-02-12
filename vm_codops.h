@@ -1,4 +1,5 @@
 #define OP_ADD		1 
+
 //
 #define OP_SUB 	2
 //
@@ -6,6 +7,7 @@
 //
 #define OP_DIV		4
 //
+
 #define OP_DIVI	5
 
 #define OP_NEG		7
