@@ -262,12 +262,21 @@ void decodeInstruction(char *line)
 				// nothing to resolve
 				case 2:
 					found=1;
+					sscanf(line,tabInstructionNames[i].format,dummy,&string_operand);
+					addCode(tabInstructionNames[i].opcod);
+					for (j=0; j < strlen(string_operand); j++)
+					{
+						addCode(string_operand[j]);					
+					}
+					addCode(0);
 					// Add code here...
 					break;
 				// one operand, and it's a label
 				// check if there is something to resolve later
 				case 3:
 					found=1;
+					sscanf(line,tabInstructionNames[i].format,dummy,&string_label);
+					addCode(tabInstructionNames[i].opcod);
 					// Add code here...
 					break;
 				// one operand, of type string with " for outchar
