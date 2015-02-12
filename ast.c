@@ -78,6 +78,50 @@ nodeType *createOperatorNode(int oper, int nops, ...)
 // d'un pointeur sur la racine de celui-ci
 void generateAsmRec(nodeType *n, FILE *fout)
 {
+	int ligne = 0;
+	int nbr_instruction = 0;
+
+	switch(n->type)
+	{
+		case typeNumeric :
+			// A FAIRE 
+			break;
+	
+		case typeOperator :
+			switch(n->t_oper.oper)
+			{
+				case OPER_ADD:
+					// A FAIRE 
+					break;
+
+				case OPER_SUB:
+					// A FAIRE 
+					break;
+
+				case OPER_MULT:
+					// A FAIRE 
+					break;
+
+				case OPER_DIV:
+					// A FAIRE 
+					break;
+
+				case OPER_OUTPUT:
+					// A FAIRE 
+					break;
+
+				default :
+					printf("ERREUR : operateur non reconnu ");
+					exit(1);
+					break;
+			}
+			break;
+
+		default :
+			printf("\n ERREUR , noeud Non reconnu .... \n");
+			exit(1);
+			break;
+	}
 }
 
 // Q4 ; Ecrire la fonction, non recursive, qui va permettre

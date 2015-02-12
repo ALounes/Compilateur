@@ -169,7 +169,11 @@ void addLabel(char *labelname,int addr)
 {
    tabLabels[currentLabel].label = strdup(labelname);
    tabLabels[currentLabel].addr = addr;
-   currentLabel++;
+   if (currentLabel++ > MAX_LABELS_SIZE)
+	{
+		printf("ERREUR : OUT OF BOUND \n");
+		exit(1);
+	}
 }
 
 // Structure permettant de manipuler les references dans le code, resolues
