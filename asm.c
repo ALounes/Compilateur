@@ -9,9 +9,6 @@
 #define MAX_LABELS_SIZE 100
 #define MAX_IDENTS_SIZE 100
 
-#define OP_ADD 1
-void addInstructionName(char *instname, int opcod, int type, char *format, int nbops);
-
 // Structure tres simple qui va contenir le code
 // genere. La seule fonction d'acces a ce tableau est
 // la fonction
@@ -169,7 +166,7 @@ void addLabel(char *labelname,int addr)
 {
    tabLabels[currentLabel].label = strdup(labelname);
    tabLabels[currentLabel].addr = addr;
-   if (currentLabel++ > MAX_LABELS_SIZE)
+   if (++currentLabel > MAX_LABELS_SIZE)
 	{
 		printf("ERREUR : OUT OF BOUND \n");
 		exit(1);
@@ -183,8 +180,8 @@ void addLabel(char *labelname,int addr)
 // reference, que l'on connaitra car tous les labels seront eux-meme connus.
 // Les fonctions d'acces a ce tableau sont
 /*
-        void addReference(char *labelname,int addrInCode), qui permet d'ajouter
-                une reference et son adresse dans le code dans la table
+	void addReference(char *labelname,int addrInCode), qui permet d'ajouter
+		une reference et son adresse dans le code dans la table
 	void resolveReferences(), qui permet de resoudre les references
         la variable globale entiere currentRef compte le nombre
                 de references et est incremente pour chaque ajout dans
@@ -209,6 +206,18 @@ void addReference(char *labelname,int addrInCode)
 // Q6 : Ecrire le code
 void resolveReferences()
 {
+	int i,res;
+
+	for(i=0; i<currentRef ;i++)
+	{
+		res = findLabel(tabReferences[i].label);
+		if (res == -1)
+		{
+			printf("\nERREUR : LABEL INCONNU \n");
+			exit(1);
+		}
+		tabReferences[i].addrInCode =tabLabel[res].addr;
+	}
 }
 
 // La fonction decodeInstruction(char *line) est appelee par la boucle
@@ -222,10 +231,10 @@ void resolveReferences()
 // Q7 : Completer la fonction pour decoder les 4 types d'instructions
 void decodeInstruction(char *line)
 {
-	int i,j,l,k,pos,comp;
+	int  i,j,l,k,pos,comp;
 	char *p;
-	int int_operand;
-	int found=0;
+	int  int_operand;
+	int  found=0;
 	char dummy[25];
 	char string_operand[256];
 	char string_label[25];
@@ -272,7 +281,6 @@ void decodeInstruction(char *line)
 					{
 						addCode(string_operand[j]);					
 					}
-					addCode(0);
 					// Add code here...
 					break;
 				// one operand, and it's a label
