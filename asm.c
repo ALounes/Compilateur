@@ -103,24 +103,23 @@ void addCode(int v)
 
 struct instructionName {
 	char *name;			// Le nom de l'instruction
+	char *format;		// son format
 	int opcod;			// son codop, extrait de vm_codops.h
 	int type;			// son type
-	char *format;			// son format
 	int nbops;			// le nombre d'operandes de l'inst
 } tabInstructionNames[MAX_IDENTS_SIZE]; 
+
 int currentInstructionName;
 
 // Q2 : Ecrire le code 
 void addInstructionName(char *instname, int opcod, int type, char *format, int nbops)
 {
-   
    tabInstructionNames[currentInstructionName].name = strdup(instname);
    tabInstructionNames[currentInstructionName].opcod = opcod;
    tabInstructionNames[currentInstructionName].type = type;
    tabInstructionNames[currentInstructionName].name = strdup(format);
    tabInstructionNames[currentInstructionName].nbops = nbops;
    currentInstructionName++;
-
 }
 
 // La structure de donnees suivante permet de manipuler les etiquettes
