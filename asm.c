@@ -9,6 +9,9 @@
 #define MAX_LABELS_SIZE 100
 #define MAX_IDENTS_SIZE 100
 
+#define OP_ADD 1
+void addInstructionName(char *instname, int opcod, int type, char *format, int nbops);
+
 // Structure tres simple qui va contenir le code
 // genere. La seule fonction d'acces a ce tableau est
 // la fonction
@@ -40,8 +43,8 @@ void addCode(int v)
 // Les instructions suivantes sont de type 0 car elles ne demandent pas
 // de décodage d'operandes supplementaires. Leur chaine de format est ""
 // et leur nombre d'argument est 0
-
-        addInstructionName("add"   , OP_ADD   , 0, "", 0);
+/*
+        addInstructionName("add",OP_ADD,0,"",0);
         addInstructionName("sub"   , OP_SUB   , 0, "", 0);
         addInstructionName("mult"  , OP_MULT  , 0, "", 0);
         addInstructionName("div"   , OP_DIV   , 0, "", 0);
@@ -60,46 +63,46 @@ void addCode(int v)
         addInstructionName("savebp", OP_SAVEBP, 0, "", 0);
         addInstructionName("rstrbp", OP_RSTRBP, 0, "", 0);
         addInstructionName("halt"  , OP_HALT  , 0, "", 0);
-
+*/
 // Les instructions suivantes sont de type 1, ce qui signifie
 // que le decodage d'un entier est necessaire. La chaine
 // de format est donc "%s %d". Le %s represente l'instruction et le %d
 // l'operande. Il y a un operande pour ce genre d'instruction
-
+/*
         addInstructionName("inc" , OP_INC , 1, "%s %d", 1);
         addInstructionName("dec" , OP_DEC , 1, "%s %d", 1);
         addInstructionName("push", OP_PUSH, 1, "%s %d", 1);
         addInstructionName("libp", OP_LIBP, 1, "%s %d", 1);
         addInstructionName("move", OP_MOVE, 1, "%s %d", 1);
         addInstructionName("copy", OP_COPY, 1, "%s %d", 1);
-
+*/
 // L'instruction suivante est de type 2, ce qui signifie que
 // le decodage d'une chaine de caracteres representant un nombre
 // reel est necessaire. La chaine de format est donc "%s %s"
 // et le deuxieme %s represente la chaine du nombre reel. Il y a
 // un operande pour ce genre d'instruction
-
+/*
         addInstructionName("pushr", OP_PUSHR, 2, "%s %s", 1);
-
+*/
 // Les instructions suivantes sont de type 3, ce qui signifie que
 // le decodage d'une chaine de caracteres representant une etiquette
 // est necessaire. La chaine de format est donc "%s %s" et
 // le deuxieme %s represente l'etiquette. Il y a un
 // operande pour ce genre d'instructions
-
+/*
         addInstructionName("jf"  , OP_JF  , 3, "%s %s", 1);
         addInstructionName("jl"  , OP_JL  , 3, "%s %s", 1);
         addInstructionName("jg"  , OP_JG  , 3, "%s %s", 1);
         addInstructionName("call", OP_CALL, 3, "%s %s", 1);
-
+*/
 // L'instruction suivante est de type 4, ce qui signifie que
 // le decodage d'une chaine de caracteres est necessaire. 
 // La chaine de format est donc "%s %s"
 // et le deuxieme %s represente la chaine. Il y a
 // un operande pour ce genre d'instruction
-
+/*
         addInstructionName("outchar", OP_OUTCHAR, 4, "%s %s", 1);
-
+*/
 
 struct instructionName {
 	char *name;			// Le nom de l'instruction
@@ -258,16 +261,19 @@ void decodeInstruction(char *line)
 				// one operand, of type string for rpush
 				// nothing to resolve
 				case 2:
+					found=1;
 					// Add code here...
 					break;
 				// one operand, and it's a label
 				// check if there is something to resolve later
 				case 3:
+					found=1;
 					// Add code here...
 					break;
 				// one operand, of type string with " for outchar
 				// nothing to resolve
 				case 4:
+					found=1;
 					// Add code here...
 					break;
 			}

@@ -1,8 +1,8 @@
 #define OP_ADD		1 
-#define OP_SUB 		2
-#define OP_MULT		3
+#define OP_SUB 	2
+#define OP_MULT	3
 #define OP_DIV		4
-#define OP_DIVI		5
+#define OP_DIVI	5
 
 #define OP_NEG		7
 #define OP_AND		8
@@ -27,7 +27,7 @@
 #define OP_JF		201
 #define OP_JL		202
 #define OP_JG		203
-#define OP_CALL		204
+#define OP_CALL	204
 #define OP_RET		205
 
 #define OP_INPUT	300	
