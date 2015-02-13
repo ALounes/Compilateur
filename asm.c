@@ -41,7 +41,7 @@ void addCode(int v)
 // de décodage d'operandes supplementaires. Leur chaine de format est ""
 // et leur nombre d'argument est 0
 /*
-        addInstructionName("add",OP_ADD,0,"",0);
+        addInstructionName("add"   ,OP_ADD    , 0, "", 0);
         addInstructionName("sub"   , OP_SUB   , 0, "", 0);
         addInstructionName("mult"  , OP_MULT  , 0, "", 0);
         addInstructionName("div"   , OP_DIV   , 0, "", 0);
@@ -365,6 +365,17 @@ void parseAsm(FILE *fin)
 // les etiquettes et les references
 void printLabels()
 {
+	int i; 
+
+	for(i=0; i<currentLabel ;i++)
+	{
+			printf("Label : %s \t\t addr: %d \n",tabLabels[i].label,tabLabels[i].addr);
+	}
+
+	for(i=0; i<currentRef ;i++)
+	{
+			printf("Ref : %s \t\t addInCode: %d \n",tabReferences[i].label,tabReferences[i].addrInCode);
+	}
 }
 
 // Q10 : Completer la fonction suivante, qui permet de desassembler
@@ -379,18 +390,148 @@ void dumpBinaryCode()
 		printf("%5.5d: ",pc);
 		switch (codeSegment[pc])
 		{
-                        case OP_ADD:
+			case OP_ADD:
 				printf("add\n");
-                                pc++ ; break;
-                        case OP_SUB:
+				pc++ ; break;
+
+			case OP_SUB:
 				printf("sub\n");
-                                pc++ ; break;
+				pc++ ; break;
 
-			// add lots of code here
+			case OP_MULT:
+				printf("mult\n");
+				pc++; break;
 
-                        case OP_HALT:
+			case OP_DIV:
+				printf("div\n");
+				pc++; break;
+
+			case OP_NEG:
+				printf("neg\n");
+				pc++; break;
+
+			case OP_AND:
+				printf("and\n");
+				pc++; break;
+
+			case OP_OR:
+				printf("or\n");
+				pc++; break;
+
+			case OP_NOT:
+				printf("not\n");
+				pc++ ;break;
+
+			case OP_EQ:
+				printf("eq\n");
+				pc++; break;
+
+			case OP_LS:
+				printf("ls\n");
+				pc++; break;
+
+			case OP_GT:
+				printf("gt\n");
+				pc++; break;
+
+			case OP_DUPL:
+				printf("dupl\n");
+				pc++; break;
+
+			case OP_CONT:
+				printf("cont\n");
+				pc++; break;
+
+			case OP_RET:
+				printf("ret\n");
+				pc++; break; 
+
+			case OP_INPUT:
+				printf("input\n");
+				pc++; break;
+
+			case OP_OUTPUT:
+				printf("output\n");
+				pc++; break;
+
+			case OP_SAVEBP:
+				printf("savebp\n");
+				pc++; break;
+
+			case OP_RSTRBP:
+				printf("rstrbp\n");
+				pc++; break;
+
+			case OP_HALT:
 				printf("halt\n");
-                                pc++; break;
+				pc++; break;
+
+			// INSTRUCTION LVL 1
+
+			case OP_INC:
+				printf("inc %d \n",codeSegment[pc+1]);
+				pc+=2; break;
+
+			case OP_DEC:
+				printf("dec %d \n",codeSegment[pc+1]);
+				pc+=2; break;
+
+			case OP_PUSH:
+				printf("push %d \n",codeSegment[pc+1]);
+				pc+=2; break;
+
+			case OP_LIBP:
+				printf("libp %d \n",codeSegment[pc+1]);
+				pc+=2; break;
+
+			case OP_MOVE:
+				printf("move %d \n",codeSegment[pc+1]);
+				pc+=2; break;
+
+			case OP_COPY:
+				printf("copy %d \n",codeSegment[pc+1]);
+				pc+=2; break;
+
+			// INSTRUCTION LVL 02
+
+			case OP_PUSHR:
+				printf("pushr ''");
+				while(codeSegment[++pc] != '0')
+				{
+					printf("%c",codeSegment[pc]);
+				}
+				printf("''\n");
+				pc++;	
+				break; // MAYBE IT's FALSE ???
+
+			// INSTRUCTION LVL 03
+
+			case OP_JF:
+				printf("jf %d \n",codeSegment[++pc]);
+				pc++; break; 
+
+			case OP_JL:
+				printf("jl %d \n",codeSegment[++pc]);
+				pc++; break; 
+
+			case OP_JG:
+				printf("jg %d \n",codeSegment[++pc]);
+				pc++; break; 
+
+			case OP_CALL:
+				printf("call %d \n",codeSegment[++pc]);
+				pc++; break; 
+
+			// INSTRUCTION LVL 04
+
+			case OP_OUTCHAR:
+				printf("outchar \n");
+				while(codeSegment[++pc] != 0)
+				{
+					printf("%c",codeSegment[pc]);
+				}
+				pc++; break; // MAYBE IT'S FALSE
+
 			default:
 				printf("Instruction inconnue :(\n");
 				exit(1);
