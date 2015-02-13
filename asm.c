@@ -339,7 +339,7 @@ void decodeInstruction(char *line)
 void parseAsm(FILE *fin)
 {
 	char line[100];
-	char *label, *bidon;
+	char *label;
 
 	fgets(line,100,fin);
 	while (strstr(line,"end")==NULL)
@@ -353,10 +353,9 @@ void parseAsm(FILE *fin)
 			decodeInstruction(line);
 		else
 		{
-			sscanf(line,"%s:%s",label,bidon);
+			sscanf(line,"%s:",label);
 			addLabel(label,currentInst);
 		}
-		// add code here
 
 		fgets(line,100,fin);
 	}
