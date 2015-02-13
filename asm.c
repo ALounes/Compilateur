@@ -390,6 +390,8 @@ void dumpBinaryCode()
 		printf("%5.5d: ",pc);
 		switch (codeSegment[pc])
 		{
+	
+			// INSTRUCCTION LVL 00
 			case OP_ADD:
 				printf("add\n");
 				pc++ ; break;
@@ -466,7 +468,7 @@ void dumpBinaryCode()
 				printf("halt\n");
 				pc++; break;
 
-			// INSTRUCTION LVL 1
+			// INSTRUCTION LVL 01
 
 			case OP_INC:
 				printf("inc %d \n",codeSegment[pc+1]);
@@ -530,7 +532,7 @@ void dumpBinaryCode()
 				{
 					printf("%c",codeSegment[pc]);
 				}
-				pc++; break; // MAYBE IT'S FALSE
+				pc++; break; // MAYBE IT'S FALSE ?????
 
 			default:
 				printf("Instruction inconnue :(\n");
@@ -545,6 +547,14 @@ void dumpBinaryCode()
 // deux passes d'assemblage
 void generateBinary(FILE *fout)
 {
+	int i;
+
+	fprintf(fout,"%d",currentInst);
+
+	for(i=0; i<currentInst ; i++)
+	{
+		fprintf(fout,"%d:%d",i,codeSegment[i]);
+	}
 }
 
 // Cadeau : On vous donne le programme principale. Je sais, je sais,
@@ -560,37 +570,37 @@ int main(int argc, char **argv)
 		printf("Error opening read file %s\n",argv[1]);
 
 	currentInstructionName=0;
-	addInstructionName("add", OP_ADD, 0, "", 0);
-	addInstructionName("sub", OP_SUB, 0, "", 0);
-	addInstructionName("mult", OP_MULT, 0, "", 0);
-	addInstructionName("div", OP_DIV, 0, "", 0);
-	addInstructionName("neg", OP_NEG, 0, "", 0);
-	addInstructionName("and", OP_AND, 0, "", 0);
-	addInstructionName("or", OP_OR, 0, "", 0);
-	addInstructionName("not", OP_NOT, 0, "", 0);
-	addInstructionName("eq", OP_EQ, 0, "", 0);
-	addInstructionName("ls", OP_LS, 0, "", 0);
-	addInstructionName("gt", OP_GT, 0, "", 0);
-	addInstructionName("inc", OP_INC, 1, "%s %d", 1);
-	addInstructionName("dec", OP_DEC, 1, "%s %d", 1);
-	addInstructionName("push", OP_PUSH, 1, "%s %d", 1);
-	addInstructionName("pushr", OP_PUSHR, 2, "%s %s", 1);
-	addInstructionName("libp", OP_LIBP, 1, "%s %d", 1);
-	addInstructionName("dupl", OP_DUPL, 0, "", 0);
-	addInstructionName("cont", OP_CONT, 0, "", 0);
-	addInstructionName("move", OP_MOVE, 1, "%s %d", 1);
-	addInstructionName("copy", OP_COPY, 1, "%s %d", 1);
-	addInstructionName("jf", OP_JF, 3, "%s %s", 1);
-	addInstructionName("jl", OP_JL, 3, "%s %s", 1);
-	addInstructionName("jg", OP_JG, 3, "%s %s", 1);
-	addInstructionName("call", OP_CALL, 3, "%s %s", 1);
-	addInstructionName("ret", OP_RET, 0, "", 0);
-	addInstructionName("input", OP_INPUT, 0, "", 0);
-	addInstructionName("output", OP_OUTPUT, 0, "", 0);
+	addInstructionName("add"    , OP_ADD, 0, "", 0);
+	addInstructionName("sub"    , OP_SUB, 0, "", 0);
+	addInstructionName("mult"   , OP_MULT, 0, "", 0);
+	addInstructionName("div"    , OP_DIV, 0, "", 0);
+	addInstructionName("neg"    , OP_NEG, 0, "", 0);
+	addInstructionName("and"    , OP_AND, 0, "", 0);
+	addInstructionName("or"     , OP_OR, 0, "", 0);
+	addInstructionName("not"    , OP_NOT, 0, "", 0);
+	addInstructionName("eq"     , OP_EQ, 0, "", 0);
+	addInstructionName("ls"     , OP_LS, 0, "", 0);
+	addInstructionName("gt"     , OP_GT, 0, "", 0);
+	addInstructionName("inc"    , OP_INC, 1, "%s %d", 1);
+	addInstructionName("dec"    , OP_DEC, 1, "%s %d", 1);
+	addInstructionName("push"   , OP_PUSH, 1, "%s %d", 1);
+	addInstructionName("pushr"  , OP_PUSHR, 2, "%s %s", 1);
+	addInstructionName("libp"   , OP_LIBP, 1, "%s %d", 1);
+	addInstructionName("dupl"   , OP_DUPL, 0, "", 0);
+	addInstructionName("cont"   , OP_CONT, 0, "", 0);
+	addInstructionName("move"   , OP_MOVE, 1, "%s %d", 1);
+	addInstructionName("copy"   , OP_COPY, 1, "%s %d", 1);
+	addInstructionName("jf"     , OP_JF, 3, "%s %s", 1);
+	addInstructionName("jl"     , OP_JL, 3, "%s %s", 1);
+	addInstructionName("jg"     , OP_JG, 3, "%s %s", 1);
+	addInstructionName("call"   , OP_CALL, 3, "%s %s", 1);
+	addInstructionName("ret"    , OP_RET, 0, "", 0);
+	addInstructionName("input"  , OP_INPUT, 0, "", 0);
+	addInstructionName("output" , OP_OUTPUT, 0, "", 0);
 	addInstructionName("outchar", OP_OUTCHAR, 4, "%s %s", 1);
-	addInstructionName("savebp", OP_SAVEBP, 0, "", 0);
-	addInstructionName("rstrbp", OP_RSTRBP, 0, "", 0);
-	addInstructionName("halt", OP_HALT, 0, "", 0);
+	addInstructionName("savebp" , OP_SAVEBP, 0, "", 0);
+	addInstructionName("rstrbp" , OP_RSTRBP, 0, "", 0);
+	addInstructionName("halt"   , OP_HALT, 0, "", 0);
 
 	currentLabel=0;
 	currentInst=0;
