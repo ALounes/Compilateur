@@ -44,7 +44,7 @@ void printPile()
    {
       printf("%.2f \n", pile[i]);
    }
-   printf("(Fin de pile,SP = % d)\n",sp);
+   printf("(Fin de pile,SP = % d, PC = %d)\n--------------------\n",sp,pc);
 
 }
 
@@ -126,7 +126,7 @@ void run()
 
 			case OP_OR:	
 			{
-				printf("AND\n");
+				printf("OR\n");
 		      pile[sp-1]=pile[sp]||pile[sp-1]; 
 		      sp--; pc++; 
 				break;
@@ -143,7 +143,14 @@ void run()
 			case OP_EQ:	
 			{
 				printf("EQ\n");
-		      pile[sp-1]= (pile[sp] == pile[sp-1]); 
+
+				if (pile[sp] == pile[sp-1])
+				{	   
+				   pile[sp-1] = 1;
+				}
+				else {
+		         pile[sp-1] = 0; 
+		      }
 		      sp--; pc++; 
 				break;
 			}
@@ -175,7 +182,7 @@ void run()
 
 			case OP_DEC:	
 			{
-				printf("INC\n");
+				printf("DEC\n");
 		      pile[sp-1]=pile[sp]||pile[sp-1]; 
 		      sp -= codeSegment[pc+1];
 				pc += 2; 
@@ -386,7 +393,7 @@ void run()
 				exit(1);
 		}
 		//printExecStack();
-		//printPile();
+		printPile();
 	}
 }
 
@@ -400,7 +407,7 @@ int main(int argc, char **argv)
 {
 	if (argc!=2)
 	{
-		printf("Usage : vm infile.bin\n");
+		printf("Usage : evm infile.bin\n");
 	}
 	FILE *fin=fopen(argv[1],"r");
 	if (fin==NULL)

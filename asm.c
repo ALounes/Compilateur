@@ -216,7 +216,7 @@ void resolveReferences()
 			printf("\nERREUR : LABEL INCONNU \n");
 			exit(1);
 		}
-		tabReferences[i].addrInCode =tabLabel[res].addr;
+		tabReferences[i].addrInCode =tabLabels[res].addr;
 	}
 }
 
@@ -295,7 +295,7 @@ void decodeInstruction(char *line)
 
 					if (pos != -1)
 					{
-						addCode(tabLabel[pos].addr);
+						addCode(tabLabels[pos].addr);
 					}
 					else 
 					{
@@ -308,12 +308,11 @@ void decodeInstruction(char *line)
 				// nothing to resolve
 				case 4:
 					found=1;
-					sscanf(line,tabInstructionNames[i].format,dummy,&string_operand);
+					sscanf(line,tabInstructionNames[i].format,dummy,p);
 					addCode(tabInstructionNames[i].opcod);
-					for (j=0; j < strlen(string_operand); j++)
+					for (j=1; j < strlen(p)-1; j++)
 					{
-						if(string_operand[j] != "\"")
-						addCode(string_operand[j]);					
+						addCode(p[j]);					
 					}
 					addCode(0);
 					break;
