@@ -20,7 +20,7 @@ nodeType *createNumericNode(float v)
 	}	 
 
 	p->type = typeNumeric ;
-	p->digraphNode = countDigraph; // POUR DOT ??? QUE FAIRE ?
+	p->digraphNode = -1; // POUR DOT ??? QUE FAIRE ?
 	p->t_numeric.valeur = v ;
 	
 	return p;
@@ -47,7 +47,7 @@ nodeType *createOperatorNode(int oper, int nops, ...)
 	p->type = typeOperator ;
 
 	// ?????????
-	p->digraphNode = countDigraph; // POUR DOT ??? QUE FAIRE ?
+	p->digraphNode = -1; // POUR DOT ??? QUE FAIRE ?
 
 	// affectation de la valeur de l'operateur 
 	p->t_oper.oper = oper;

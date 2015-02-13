@@ -263,6 +263,7 @@ void decodeInstruction(char *line)
 					found=1;
 					addCode(tabInstructionNames[i].opcod);
 					break;
+
 				// one operand, of type integer
 				// nothing to resolve
 				case 1:
@@ -271,6 +272,7 @@ void decodeInstruction(char *line)
 					addCode(tabInstructionNames[i].opcod);
 					addCode(int_operand);
 					break;
+
 				// one operand, of type string for rpush
 				// nothing to resolve
 				case 2:
@@ -310,9 +312,9 @@ void decodeInstruction(char *line)
 					found=1;
 					sscanf(line,tabInstructionNames[i].format,dummy,p);
 					addCode(tabInstructionNames[i].opcod);
-					for (j=1; j < strlen(p)-1; j++)
+					for (k=1; k < strlen(p)-1; k++)
 					{
-						addCode(p[j]);					
+						addCode(p[k]);					
 					}
 					addCode(0);
 					break;
@@ -337,6 +339,7 @@ void decodeInstruction(char *line)
 void parseAsm(FILE *fin)
 {
 	char line[100];
+	char *label, *bidon;
 
 	fgets(line,100,fin);
 	while (strstr(line,"end")==NULL)
@@ -346,6 +349,13 @@ void parseAsm(FILE *fin)
 		/* if line contains ':', it's a label, and declare it as such*/
 		char *p=strstr(line,":");
 
+		if (p == NULL)
+			decodeInstruction(line);
+		else
+		{
+			sscanf(line,"%s:%s",label,bidon);
+			addLabel(label,currentInst);
+		}
 		// add code here
 
 		fgets(line,100,fin);
