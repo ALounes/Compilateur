@@ -281,21 +281,41 @@ void decodeInstruction(char *line)
 					{
 						addCode(string_operand[j]);					
 					}
-					// Add code here...
+					addCode(0);
 					break;
+
 				// one operand, and it's a label
 				// check if there is something to resolve later
 				case 3:
 					found=1;
 					sscanf(line,tabInstructionNames[i].format,dummy,&string_label);
 					addCode(tabInstructionNames[i].opcod);
-					// Add code here...
+
+					pos = findLabel(string_label);
+
+					if (pos != -1)
+					{
+						addCode(tabLabel[pos].addr);
+					}
+					else 
+					{
+						addReference(string_label,currentInst);
+						addCode(-1);
+					}
 					break;
+
 				// one operand, of type string with " for outchar
 				// nothing to resolve
 				case 4:
 					found=1;
-					// Add code here...
+					sscanf(line,tabInstructionNames[i].format,dummy,&string_operand);
+					addCode(tabInstructionNames[i].opcod);
+					for (j=0; j < strlen(string_operand); j++)
+					{
+						if(string_operand[j] != "\"")
+						addCode(string_operand[j]);					
+					}
+					addCode(0);
 					break;
 			}
 		}
