@@ -45,13 +45,12 @@ nodeType *createOperatorNode(int oper, int nops, ...)
  
 	// Le noeud est de type operateur 
 	p->type = typeOperator ;
-
-	// ?????????
 	p->digraphNode = -1; // POUR DOT ??? QUE FAIRE ?
+
 
 	// affectation de la valeur de l'operateur 
 	p->t_oper.oper = oper;
-	// affectation du nombre de fils
+	// affectation du nombre de fils (2?)
 	p->t_oper.nOperands = nops;
 
 
@@ -78,36 +77,57 @@ nodeType *createOperatorNode(int oper, int nops, ...)
 // d'un pointeur sur la racine de celui-ci
 void generateAsmRec(nodeType *n, FILE *fout)
 {
+   int i = 0;
 	int ligne = 0;
 	int nbr_instruction = 0;
 
 	switch(n->type)
 	{
 		case typeNumeric :
-			// A FAIRE 
+			fprintf(fout, "\tpush %f\n", n->t_numeric.valeur);
 			break;
 	
 		case typeOperator :
 			switch(n->t_oper.oper)
 			{
 				case OPER_ADD:
-					// A FAIRE 
+				   for (i = 0; i < n->t_oper.nOperands; ++i)
+				   {
+				      generateAsmRec(*(n->t_oper.op + i),fout);
+				   }
+					fprintf(fout, "\tadd\n"); 
 					break;
 
 				case OPER_SUB:
-					// A FAIRE 
+					for (i = 0; i < n->t_oper.nOperands; ++i)
+				   {
+				      generateAsmRec(*(n->t_oper.op + i),fout);
+				   } 
+					fprintf(fout, "\tsub\n");
 					break;
 
 				case OPER_MULT:
-					// A FAIRE 
+					for (i = 0; i < n->t_oper.nOperands; ++i)
+				   {
+				      generateAsmRec(*(n->t_oper.op + i),fout);
+				   } 
+					fprintf(fout, "\tmult\n");
 					break;
 
 				case OPER_DIV:
-					// A FAIRE 
+					for (i = 0; i < n->t_oper.nOperands; ++i)
+				   {
+				      generateAsmRec(*(n->t_oper.op + i),fout);
+				   } 
+					fprintf(fout, "\tdiv\n");
 					break;
 
 				case OPER_OUTPUT:
-					// A FAIRE 
+					for (i = 0; i < n->t_oper.nOperands; ++i)
+				   {
+				      generateAsmRec(*(n->t_oper.op + i),fout);
+				   } 
+					fprintf(fout, "\toutput\n");
 					break;
 
 				default :
@@ -131,6 +151,13 @@ void generateAsmRec(nodeType *n, FILE *fout)
 // et la pseudo-instruction end qui arretera l'assemblage
 void generateAsm(nodeType *n, char *filename)
 {
+   FILE *fout = fopen(filename, "w");
+
+   fprintf(fout, "debut :\n");
+   generateAsmRec(n, fout);
+   fprintf(fout, "\thalt\n");
+   fprintf(fout, "\tend\n");
+   fclose(fout);
 }
 
 // Q5 : Ecrire la fonction, recursive, qui permet de generer
@@ -143,6 +170,91 @@ void generateAsm(nodeType *n, char *filename)
 // de generer les arcs du graphe.
 void generateDigraphNameNode(nodeType *n,FILE *fout)
 {
+   int i = 0;
+   switch(n->type)
+	{
+		case typeNumeric : {
+		   n->digraphNode = countDigraph;
+			fprintf(fout, "\tN%d [label=%f]\n",countDigraph, n->t_numeric.valeur);
+			++countDigraph;
+			break;
+		}
+	
+		case typeOperator : {
+			switch(n->t_oper.oper)
+			{
+				case OPER_ADD: {
+				    
+					n->digraphNode = countDigraph;
+					fprintf(fout, "\tN%d [label=\"+\"]\n",countDigraph);
+					++countDigraph;
+				   for (i = 0; i < n->t_oper.nOperands; ++i)
+				   {
+				      generateDigraphNameNode(*(n->t_oper.op + i),fout);
+				   }
+					
+					break;
+				}
+
+				case OPER_SUB: {
+				   n->digraphNode = countDigraph;
+					fprintf(fout, "\tN%d [label=\"-\"]\n",countDigraph);
+					++countDigraph;
+					for (i = 0; i < n->t_oper.nOperands; ++i)
+				   {
+				      generateDigraphNameNode(*(n->t_oper.op + i),fout);
+				   } 
+					
+					break;
+				}
+
+				case OPER_MULT: {
+				   n->digraphNode = countDigraph;
+					fprintf(fout, "\tN%d [label=\"*\"]\n",countDigraph);
+					++countDigraph;
+					for (i = 0; i < n->t_oper.nOperands; ++i)
+				   {
+				      generateDigraphNameNode(*(n->t_oper.op + i),fout);
+				   } 
+					
+					break;
+            }
+            
+				case OPER_DIV:
+				   n->digraphNode = countDigraph;
+					fprintf(fout, "\tN%d [label=\"/\"]\n",countDigraph);
+					++countDigraph;
+					for (i = 0; i < n->t_oper.nOperands; ++i)
+				   {
+				      generateDigraphNameNode(*(n->t_oper.op + i),fout);
+				   } 
+					
+					break;
+
+				case OPER_OUTPUT: {
+				   n->digraphNode = countDigraph;
+					fprintf(fout, "\tN%d [label=\"output\"]\n",countDigraph);
+					++countDigraph;
+					for (i = 0; i < n->t_oper.nOperands; ++i)
+				   {
+				      generateDigraphNameNode(*(n->t_oper.op + i),fout);
+				   } 
+					
+					break;
+				}
+
+				default :
+					printf("ERREUR : operateur non reconnu ");
+					exit(1);
+					break;
+			}
+		break;
+      }
+		default :
+			printf("\n ERREUR , noeud Non reconnu .... \n");
+			exit(1);
+			break;
+	}
 }
 
 // Q6 : Ecrire la fonction, recursive, qui permet de generer
@@ -152,6 +264,30 @@ void generateDigraphNameNode(nodeType *n,FILE *fout)
 // faite par la fonction recursive precedente 
 void generateDigraphEdges(nodeType *n,FILE *fout)
 {
+   int i = 0;
+
+   switch(n->type)
+	{
+		case typeNumeric :
+			// Ne rien faire
+			break;
+	
+		case typeOperator :
+			
+		   for (i = 0; i < n->t_oper.nOperands; ++i)
+		   {
+		      fprintf(fout, "\tN%d -> N%d\n",n->digraphNode,(*(n->t_oper.op + i))->digraphNode);
+		      generateDigraphEdges(*(n->t_oper.op + i),fout);
+		   }
+
+			break;
+
+		default :
+			printf("\n ERREUR , noeud Non reconnu .... \n");
+			exit(1);
+			break;
+	}
+
 }
 
 // Q7 : Ecrire la fonction, non recursive, permettant de
@@ -161,6 +297,13 @@ void generateDigraphEdges(nodeType *n,FILE *fout)
 // la conversion res.dot en res.png
 void generateDigraph(nodeType *n)
 {
+   FILE *fout = fopen("res.dot", "w");
+/*\nnode [label=\"\N\"]\");\ngraph [bb=\"0,0,286,252\"];*/
+   fprintf(fout, "digraph {\n");
+   generateDigraphNameNode(n,fout);
+   generateDigraphEdges(n,fout);
+   fprintf(fout, "}\n");
+   fclose(fout);
 }
 
 // La encore cadeau...
@@ -173,6 +316,7 @@ int main(int argc, char **argv)
 	nodeType *n4=createOperatorNode(OPER_ADD,2,n3,n2);
 	nodeType *n5=createOperatorNode(OPER_OUTPUT,1,n4);
 	generateAsm(n5,"res.asm");
+	countDigraph = 0;
 	generateDigraph(n5);
 
 	return 0;
