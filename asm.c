@@ -149,15 +149,22 @@ int findLabel(char *labelname)
 {
    int i = 0, cmp;
 
-			printf("suis je le gardien de mon frere Farid? i= %d curLAb : %d\n",i,currentLabel);
+	printf("suis je le gardien de mon frere Farid? i= %d curLAb : %d \n",i,currentLabel);
+	printf(" labelname = %s , tabLabel[%d].label = %s \n",labelname,i,tabLabels[i].label);
+
 	cmp = strcmp(labelname,tabLabels[i].label);
-			printf("suis je le gardien de mon djamel ? i= %d cmp = %d \n",i, cmp);
+
+	printf("AVANT LE WHILE \n");
+	printf(" labelname = %s , tabLabel[%d].label = %s \n",labelname,i,tabLabels[i].label);
+	printf("cmp = %d \n",cmp);
+
    while ((cmp!=0) && (++i < currentLabel))
    {
-		i++;
-		printf("CHATONNNNNNNNNNNN ? i= %d curLAb : %d \n",i,currentLabel);
+		printf("CHATONNNNNNNNNNNN ? i= %d curLAb : %d cmp = %d \n",i,currentLabel,cmp);
 		cmp = strcmp(labelname,tabLabels[i].label);
-
+		printf(" labelname = %s , tabLabel[%d].label = %s \n",labelname,i,tabLabels[i].label);
+		printf(" taille 1  = %d taille 2 = %d \n",strlen(labelname),strlen(tabLabels[i].label));
+		printf("FIN DU CHATOONNNNN cmp = %d \n",cmp);
    }
 			
    if (cmp == 0)
@@ -165,6 +172,7 @@ int findLabel(char *labelname)
 		// i represente l'indice du label dans la table
       return i;
    }
+
 	// on a parcouru tout le tableau sans rien trouver   
    return -1;
 }
@@ -206,26 +214,29 @@ int currentRef;
 // Q5 : Ecrire le code
 void addReference(char *labelname,int addrInCode)
 {
-   tabReferences[currentLabel].label = strdup(labelname);
-   tabReferences[currentLabel].addrInCode = addrInCode;
+   tabReferences[currentRef].label = strdup(labelname);
+   tabReferences[currentRef].addrInCode = addrInCode;
    currentRef++;
 }
+
+void printLabels();
 
 // Q6 : Ecrire le code
 void resolveReferences()
 {
 	int i,res;
-
+			printLabels();
+			getchar();
 	for(i=0; i<currentRef ;i++)
 	{
-		
 		res = findLabel(tabReferences[i].label);
 		if (res == -1)
 		{
-			printf("\nERREUR : LABEL INCONNU \n");
+			printLabels();
+			printf("\nERREUR : LABEL (%s) INCONNU \n",tabReferences[i].label);
 			exit(1);
 		}
-		tabReferences[i].addrInCode =tabLabels[res].addr;
+		codeSegment[tabReferences[i].addrInCode] = tabLabels[res].addr;
 	}
 
 }
@@ -322,6 +333,12 @@ void decodeInstruction(char *line)
 					{
 						addReference(string_label,currentInst);
 						addCode(-1);
+
+						printLabels();
+						getchar();
+						//printf(" string label = %s , add = %d \n",string_label,currentInst);
+						//printf(" ref = %s , add = %d \n",tabReferences[1].label,tabReferences[1].addrInCode);
+						//getchar();
 					}
 					printf("FIN TRAITEMENT INSTRUCTION LVL 03 \n");
 					break;
