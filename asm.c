@@ -147,14 +147,20 @@ int currentLabel;
 // Q3 : Ecrire le code
 int findLabel(char *labelname)
 {
+   int i = 0, cmp;
 
-   int i = 0;
-   while ((strcmp(labelname,tabLabels[i].label)!=0) || (i >= currentLabel))
+			printf("suis je le gardien de mon frere Farid? i= %d curLAb : %d\n",i,currentLabel);
+	cmp = strcmp(labelname,tabLabels[i].label);
+			printf("suis je le gardien de mon djamel ? i= %d cmp = %d \n",i, cmp);
+   while ((cmp!=0) && (++i < currentLabel))
    {
-      i++;
+		i++;
+		printf("CHATONNNNNNNNNNNN ? i= %d curLAb : %d \n",i,currentLabel);
+		cmp = strcmp(labelname,tabLabels[i].label);
+
    }
 			
-   if (strcmp(labelname,tabLabels[i].label) == 0)
+   if (cmp == 0)
 	{
 		// i represente l'indice du label dans la table
       return i;
@@ -212,6 +218,7 @@ void resolveReferences()
 
 	for(i=0; i<currentRef ;i++)
 	{
+		
 		res = findLabel(tabReferences[i].label);
 		if (res == -1)
 		{
@@ -220,6 +227,7 @@ void resolveReferences()
 		}
 		tabReferences[i].addrInCode =tabLabels[res].addr;
 	}
+
 }
 
 // La fonction decodeInstruction(char *line) est appelee par la boucle
@@ -641,6 +649,7 @@ int main(int argc, char **argv)
 	printf("Second assembly phase (resolve undefined references).. \n");
 	resolveReferences();
 	printf("no errors\n");
+
 
 	printLabels();
 	printf("Dumping generated binary code (please verify)\n");
