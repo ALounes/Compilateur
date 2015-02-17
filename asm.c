@@ -117,7 +117,7 @@ void addInstructionName(char *instname, int opcod, int type, char *format, int n
    tabInstructionNames[currentInstructionName].name = strdup(instname);
    tabInstructionNames[currentInstructionName].opcod = opcod;
    tabInstructionNames[currentInstructionName].type = type;
-   tabInstructionNames[currentInstructionName].name = strdup(format);
+   tabInstructionNames[currentInstructionName].format = strdup(format);
    tabInstructionNames[currentInstructionName].nbops = nbops;
    currentInstructionName++;
 }
@@ -147,11 +147,13 @@ int currentLabel;
 // Q3 : Ecrire le code
 int findLabel(char *labelname)
 {
+
    int i = 0;
-   while ((strcmp(labelname,tabLabels[i].label)!=0) || (i < currentLabel))
+   while ((strcmp(labelname,tabLabels[i].label)!=0) || (i >= currentLabel))
    {
       i++;
    }
+			
    if (strcmp(labelname,tabLabels[i].label) == 0)
 	{
 		// i represente l'indice du label dans la table
@@ -248,34 +250,41 @@ void decodeInstruction(char *line)
 	while (isalpha(line[pos]))
 		instname[l++]=line[pos++];
 	instname[l++]=0;
-	//printf("instname=|%s|\n",instname);
+	printf("instname=|%s|\n",instname);
 
 	for (i=0;i<currentInstructionName;i++)
 	{
 		comp=strcmp(instname,tabInstructionNames[i].name);
+		printf("phase 1 comp(%s,%s,%d)\n",instname,tabInstructionNames[i].name,comp);
 		if (comp==0)
 		{
+			printf("phase 2 \n");
 			switch(tabInstructionNames[i].type)
 			{
 				// no operands, just add the codop to the code
 				// nothing to resolve
 				case 0:
+					printf("DEBUT TRAITEMENT INSTRUCTION LVL 00 \n");
 					found=1;
 					addCode(tabInstructionNames[i].opcod);
+					printf("FIN TRAITEMENT INSTRUCTION LVL 00 \n");
 					break;
 
 				// one operand, of type integer
 				// nothing to resolve
 				case 1:
+					printf("DEBUT TRAITEMENT INSTRUCTION LVL 00 \n");
 					found=1;
 					sscanf(line,tabInstructionNames[i].format,dummy,&int_operand);
 					addCode(tabInstructionNames[i].opcod);
 					addCode(int_operand);
+					printf("FIN TRAITEMENT INSTRUCTION LVL 01 \n");
 					break;
 
 				// one operand, of type string for rpush
 				// nothing to resolve
 				case 2:
+					printf("DEBUT TRAITEMENT INSTRUCTION LVL 02 \n");
 					found=1;
 					sscanf(line,tabInstructionNames[i].format,dummy,&string_operand);
 					addCode(tabInstructionNames[i].opcod);
@@ -284,17 +293,19 @@ void decodeInstruction(char *line)
 						addCode(string_operand[j]);					
 					}
 					addCode(0);
+					printf("FIN TRAITEMENT INSTRUCTION LVL 02 \n");
 					break;
 
 				// one operand, and it's a label
 				// check if there is something to resolve later
 				case 3:
+					printf("DEBUT TRAITEMENT INSTRUCTION LVL 03 \n");
 					found=1;
 					sscanf(line,tabInstructionNames[i].format,dummy,&string_label);
 					addCode(tabInstructionNames[i].opcod);
 
 					pos = findLabel(string_label);
-
+					printf(" suis je le gardien de mon frere FINAL ? \n");
 					if (pos != -1)
 					{
 						addCode(tabLabels[pos].addr);
@@ -304,19 +315,28 @@ void decodeInstruction(char *line)
 						addReference(string_label,currentInst);
 						addCode(-1);
 					}
+					printf("FIN TRAITEMENT INSTRUCTION LVL 03 \n");
 					break;
 
 				// one operand, of type string with " for outchar
 				// nothing to resolve
 				case 4:
+					printf("DEBUT TRAITEMENT INSTRUCTION LVL 04 \n");
 					found=1;
-					sscanf(line,tabInstructionNames[i].format,dummy,p);
+					sscanf(line,tabInstructionNames[i].format,dummy,string_operand);
 					addCode(tabInstructionNames[i].opcod);
-					for (k=1; k < strlen(p)-1; k++)
+					j = 0;
+					while(line[j++] != '"');
+					printf("debut traitement  le char : %c%c%c \n",line[j],line[j+1],line[j+2]);
+					while(line[j] != '"')
 					{
-						addCode(p[k]);					
+						printf("ALORS ? \n");
+						printf("%c \n",line[j]);
+						addCode(line[j]);	
+						j++;
 					}
 					addCode(0);
+					printf("FIN TRAITEMENT INSTRUCTION LVL 04 \n");
 					break;
 			}
 		}
@@ -344,17 +364,24 @@ void parseAsm(FILE *fin)
 	fgets(line,100,fin);
 	while (strstr(line,"end")==NULL)
 	{
-		//printf("%s",line);
+		printf("%s",line);
 
 		/* if line contains ':', it's a label, and declare it as such*/
 		char *p=strstr(line,":");
 
+		printf("PARS ASM \n");
 		if (p == NULL)
+		{
+			printf("Debut decode\n");
 			decodeInstruction(line);
+			printf("FIN DECODE\n");
+		}
 		else
 		{
+			printf("DEBUT AJOUT LABEL\n");
 			sscanf(line,"%s:",label);
 			addLabel(label,currentInst);
+			printf("FIN AJOUT LABEL\n");
 		}
 
 		fgets(line,100,fin);
@@ -527,11 +554,12 @@ void dumpBinaryCode()
 			// INSTRUCTION LVL 04
 
 			case OP_OUTCHAR:
-				printf("outchar \n");
+				printf("outchar \"");
 				while(codeSegment[++pc] != 0)
 				{
 					printf("%c",codeSegment[pc]);
 				}
+				printf("\"\n");
 				pc++; break; // MAYBE IT'S FALSE ?????
 
 			default:
@@ -549,11 +577,11 @@ void generateBinary(FILE *fout)
 {
 	int i;
 
-	fprintf(fout,"%d",currentInst);
+	fprintf(fout,"%d\n",currentInst);
 
 	for(i=0; i<currentInst ; i++)
 	{
-		fprintf(fout,"%d:%d",i,codeSegment[i]);
+		fprintf(fout,"%d:%d\n",i,codeSegment[i]);
 	}
 }
 
@@ -605,13 +633,15 @@ int main(int argc, char **argv)
 	currentLabel=0;
 	currentInst=0;
 
-	printf("First assembly phase (analyze and decode instructions)..");
+	printf("First assembly phase (analyze and decode instructions)..\n");
 	parseAsm(fin);
 	fclose(fin);
 	printf("no errors\n");
-	printf("Second assembly phase (resolve undefined references)..");
+
+	printf("Second assembly phase (resolve undefined references).. \n");
 	resolveReferences();
 	printf("no errors\n");
+
 	printLabels();
 	printf("Dumping generated binary code (please verify)\n");
 	dumpBinaryCode();
@@ -623,5 +653,6 @@ int main(int argc, char **argv)
 	generateBinary(fout);
 	fclose(fout);
 
+	printf(" Bon voyage sur Air Couscous \n");
 	return 0;
 }
