@@ -226,7 +226,7 @@ void resolveReferences()
 {
 	int i,res;
 			printLabels();
-			getchar();
+			
 	for(i=0; i<currentRef ;i++)
 	{
 		res = findLabel(tabReferences[i].label);
@@ -305,7 +305,7 @@ void decodeInstruction(char *line)
 				case 2:
 					printf("DEBUT TRAITEMENT INSTRUCTION LVL 02 \n");
 					found=1;
-					sscanf(line,tabInstructionNames[i].format,dummy,&string_operand);
+					sscanf(line,tabInstructionNames[i].format,dummy,string_operand);
 					addCode(tabInstructionNames[i].opcod);
 					for (j=0; j < strlen(string_operand); j++)
 					{
@@ -320,7 +320,7 @@ void decodeInstruction(char *line)
 				case 3:
 					printf("DEBUT TRAITEMENT INSTRUCTION LVL 03 \n");
 					found=1;
-					sscanf(line,tabInstructionNames[i].format,dummy,&string_label);
+					sscanf(line,tabInstructionNames[i].format,dummy,string_label);
 					addCode(tabInstructionNames[i].opcod);
 
 					pos = findLabel(string_label);
@@ -333,12 +333,6 @@ void decodeInstruction(char *line)
 					{
 						addReference(string_label,currentInst);
 						addCode(-1);
-
-						printLabels();
-						getchar();
-						//printf(" string label = %s , add = %d \n",string_label,currentInst);
-						//printf(" ref = %s , add = %d \n",tabReferences[1].label,tabReferences[1].addrInCode);
-						//getchar();
 					}
 					printf("FIN TRAITEMENT INSTRUCTION LVL 03 \n");
 					break;
@@ -352,7 +346,6 @@ void decodeInstruction(char *line)
 					addCode(tabInstructionNames[i].opcod);
 					j = 0;
 					while(line[j++] != '"');
-					printf("debut traitement  le char : %c%c%c \n",line[j],line[j+1],line[j+2]);
 					while(line[j] != '"')
 					{
 						printf("ALORS ? \n");
@@ -385,28 +378,28 @@ void parseAsm(FILE *fin)
 {
 	char line[100];
 	char *label;
+	int i;
 
 	fgets(line,100,fin);
 	while (strstr(line,"end")==NULL)
 	{
-		printf("%s",line);
-
 		/* if line contains ':', it's a label, and declare it as such*/
 		char *p=strstr(line,":");
 
 		printf("PARS ASM \n");
 		if (p == NULL)
 		{
-			printf("Debut decode\n");
 			decodeInstruction(line);
-			printf("FIN DECODE\n");
 		}
 		else
 		{
-			printf("DEBUT AJOUT LABEL\n");
-			sscanf(line,"%s:",label);
-			addLabel(label,currentInst);
-			printf("FIN AJOUT LABEL\n");
+			// Methode : je suis un gros bourrin car sscanf ne veux pas marcher !!
+			i = 0;
+			while(line[i] != ':')
+				i++;
+			line[i] ='\0';
+			label = strdup(line);
+			addLabel(label,currentInst);			
 		}
 
 		fgets(line,100,fin);
@@ -549,12 +542,12 @@ void dumpBinaryCode()
 			// INSTRUCTION LVL 02
 
 			case OP_PUSHR:
-				printf("pushr ''");
-				while(codeSegment[++pc] != '0')
+				printf("pushr %c",'"');
+				while(codeSegment[++pc] != 0)
 				{
 					printf("%c",codeSegment[pc]);
 				}
-				printf("''\n");
+				printf("%c\n",'"');
 				pc++;	
 				break; // MAYBE IT's FALSE ???
 
@@ -588,7 +581,7 @@ void dumpBinaryCode()
 				pc++; break; // MAYBE IT'S FALSE ?????
 
 			default:
-				printf("Instruction inconnue :(\n");
+				printf("Instruction inconnue :(  %d%d%d \n",codeSegment[pc],codeSegment[pc+1],codeSegment[pc+2]);
 				exit(1);
 				break;
 		}
