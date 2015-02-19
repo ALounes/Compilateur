@@ -5,7 +5,6 @@
 #include "vm_codops.h"
 
 #define MAX_CODESEGMENT_SIZE 1000
-
 #define MAX_STACK_SIZE 100
 
 // Q1 : Les registres de la machine virtuelle
@@ -14,8 +13,6 @@ int pc, sp, bp;
 int codeSegment[MAX_CODESEGMENT_SIZE];
 // Q3 : Declaration de la pile d'execution (tableau de float)
 float pile[MAX_STACK_SIZE];
-
-
 
 // Q4 : Fonction de lecture d'un fichier langage machine
 //      ouvert et dont le pointeur de fichier est fin
@@ -30,7 +27,6 @@ void readAssembly(FILE *fin)
       fscanf(fin, "%d:%d\n", &prov,&codeSegment[i]);
    }
    //printf("SP : %d",sp);
-
 }
 
 // Q5 : Fonction de debug qui affiche la pile jusqu'a son sommet 
@@ -42,10 +38,9 @@ void printPile()
    
    for (i = sp; i > bp; i--)
    {
-      printf("%.2f \n", pile[i]);
+      printf("%.3f \n", pile[i]);
    }
-   printf("(Fin de pile,SP = % d, PC = %d)\n--------------------\n",sp,pc);
-
+   printf("(Fin de pile,SP = %d,BP = %d, PC = %d)\n--------------------\n",sp,bp,pc);
 }
 
 // Q6 : Boucle principale d'exécution de la machine virtuelle 
@@ -260,8 +255,6 @@ void run()
 			case OP_COPY:	
 			{
 				printf("COPY\n");
-
-				// Prof version
 			   n = codeSegment[pc+1];
 				dest = sp;
 				orig = (int)pile[sp];
@@ -271,15 +264,6 @@ void run()
 
 				sp = sp+n-1;
 				pc +=2;
-
-				/* // ma version
-			   addr = pile[sp];
-			   for (i = 0; i < codeSegment[pc+1]; i++)
-			   { 
-			      pile[sp + i] = pile[addr - codeSegment[pc+1] + 1 + i] ; 
-			   }
-				sp += (codeSegment[pc+1] - 1) ; 
-				pc += 2; */
 				break;
 			}
 
@@ -404,7 +388,6 @@ void run()
 				exit(1);
 		}
 		//printExecStack();
-		printPile();
 	}
 }
 
@@ -434,9 +417,6 @@ int main(int argc, char **argv)
    sp = -1;
    bp = -1;
    run();
-
-	// add code here
-
-   
+  
 	return 0;
 }
