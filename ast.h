@@ -1,5 +1,6 @@
 // Cet enum contient tous les types possibles pour un noeud "operator"
-typedef enum { OPER_ADD, OPER_SUB, OPER_MULT, OPER_DIV, OPER_OUTPUT } nodeOper;
+typedef enum { OPER_ADD, OPER_SUB, OPER_MULT, OPER_DIV, OPER_OUTPUT
+					/*,OPER_AFFECT, OPER_POINT_VIRGULE*/ } nodeOper;
 
 // Les deux types de noeuds possibles, "numeric" ou "operator"
 typedef enum { typeNumeric, typeOperator } nodeEnum;

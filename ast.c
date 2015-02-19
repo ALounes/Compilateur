@@ -127,7 +127,23 @@ void generateAsmRec(nodeType *n, FILE *fout)
 				   } 
 					fprintf(fout, "\toutput\n");
 					break;
+/*
+				case OPER_AFFECT:
+					for (i = 0; i < n->t_oper.nOperands; ++i)
+				   {
+				      generateAsmRec(*(n->t_oper.op + i),fout);
+				   } 
+					fprintf(fout, "\t=\n");
+					break;
 
+				case OPER_POINT_VIRGULE:
+					for (i = 0; i < n->t_oper.nOperands; ++i)
+				   {
+				      generateAsmRec(*(n->t_oper.op + i),fout);
+				   } 
+					fprintf(fout, "\t;\n");
+					break;
+*/
 				default :
 					printf("ERREUR : operateur non reconnu ");
 					exit(1);
@@ -206,7 +222,7 @@ void generateDigraphNameNode(nodeType *n,FILE *fout)
 					break;
 				}
 
-				case OPER_MULT: {
+				case OPER_MULT: 
 				   n->digraphNode = countDigraph;
 					fprintf(fout, "\tN%d [label=\"*\"]\n",countDigraph);
 					++countDigraph;
@@ -216,7 +232,6 @@ void generateDigraphNameNode(nodeType *n,FILE *fout)
 				   } 
 					
 					break;
-            }
             
 				case OPER_DIV:
 				   n->digraphNode = countDigraph;
@@ -229,7 +244,7 @@ void generateDigraphNameNode(nodeType *n,FILE *fout)
 					
 					break;
 
-				case OPER_OUTPUT: {
+				case OPER_OUTPUT: 
 				   n->digraphNode = countDigraph;
 					fprintf(fout, "\tN%d [label=\"output\"]\n",countDigraph);
 					++countDigraph;
@@ -238,8 +253,7 @@ void generateDigraphNameNode(nodeType *n,FILE *fout)
 				      generateDigraphNameNode(*(n->t_oper.op + i),fout);
 				   } 
 					
-					break;
-				}
+					break; 	
 
 				default :
 					printf("ERREUR : operateur non reconnu ");
@@ -308,15 +322,32 @@ void generateDigraph(nodeType *n)
 // La encore cadeau...
 int main(int argc, char **argv)
 {
-	nodeType *n0=createNumericNode(66.23);
-	nodeType *n1=createNumericNode(4.56);
-	nodeType *n2=createNumericNode(7.89);
-	nodeType *n3=createOperatorNode(OPER_MULT,2,n0,n1);
-	nodeType *n4=createOperatorNode(OPER_ADD,2,n3,n2);
-	nodeType *n5=createOperatorNode(OPER_OUTPUT,1,n4);
-	generateAsm(n5,"res.asm");
+	nodeType *n0=createNumericNode(1.125);
+	nodeType *n1=createNumericNode(2.250);
+	nodeType *n2=createOperatorNode(OPER_MULT,2,n1,n2);
+
+	nodeType *n3=createNumericNode(3.500);
+	nodeType *n4=createNumericNode(4.750);
+	nodeType *n5=createOperatorNode(OPER_ADD,2,n4,n3);
+
+	nodeType *n13=createOperatorNode(OPER_ADD,2,n2,n5);
+
+	nodeType *n6=createNumericNode(5.000);
+	nodeType *n7=createNumericNode(6.500);
+	nodeType *n8=createOperatorNode(OPER_SUB,2,n6,n7);
+
+	nodeType *n9=createNumericNode(7.750);
+	nodeType *n10=createNumericNode(8.500);
+	nodeType *n11=createOperatorNode(OPER_DIV,2,n9,n10);
+
+	nodeType *n14=createOperatorNode(OPER_ADD,2,n8,n11);
+
+	nodeType *n15=createOperatorNode(OPER_ADD,2,n14,n13);
+
+	nodeType *n12=createOperatorNode(OPER_OUTPUT,1,n15);
+	generateAsm(n12,"res.asm");
 	countDigraph = 0;
-	generateDigraph(n5);
+	generateDigraph(n12);
 
 	return 0;
 }

@@ -245,30 +245,41 @@ void run()
 			case OP_MOVE:	
 			{
 				printf("MOVE\n");
-			   addr = pile[sp-codeSegment[pc+1]-1];
-			   
-			   for (i = 0; i < codeSegment[pc+1]; i++)
-			   {
-			      pile[addr-i] = pile[sp-i] ; 
-			   }
+				n = codeSegment[pc+1];
+				orig = sp-n+1;
+				dest = (int)pile[sp-n];
 
-				sp -= (codeSegment[pc+1] + 1) ; 
-				pc += 2; 
+				for(i=1;i<=n;i++)
+					pile[dest++] = pile[orig++];
+
+				sp = sp-n-1;
+				pc +=2; 
 				break;
 			}
 
 			case OP_COPY:	
 			{
 				printf("COPY\n");
+
+				// Prof version
+			   n = codeSegment[pc+1];
+				dest = sp;
+				orig = (int)pile[sp];
+
+				for(i=1; i <=n;i++)
+					pile[dest++] = pile[orig++];
+
+				sp = sp+n-1;
+				pc +=2;
+
+				/* // ma version
 			   addr = pile[sp];
-			   
 			   for (i = 0; i < codeSegment[pc+1]; i++)
 			   { 
 			      pile[sp + i] = pile[addr - codeSegment[pc+1] + 1 + i] ; 
 			   }
-			   
 				sp += (codeSegment[pc+1] - 1) ; 
-				pc += 2; 
+				pc += 2; */
 				break;
 			}
 
