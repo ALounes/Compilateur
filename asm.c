@@ -542,12 +542,12 @@ void dumpBinaryCode()
 			// INSTRUCTION LVL 02
 
 			case OP_PUSHR:
-				printf("pushr %c",'"');
+				printf("pushr ");
 				while(codeSegment[++pc] != 0)
 				{
 					printf("%c",codeSegment[pc]);
 				}
-				printf("%c\n",'"');
+				printf("\n");
 				pc++;	
 				break; // MAYBE IT's FALSE ???
 
@@ -572,12 +572,12 @@ void dumpBinaryCode()
 			// INSTRUCTION LVL 04
 
 			case OP_OUTCHAR:
-				printf("outchar \"");
+				printf("outchar %c",'"');
 				while(codeSegment[++pc] != 0)
 				{
 					printf("%c",codeSegment[pc]);
 				}
-				printf("\"\n");
+				printf("%c\n",'"');
 				pc++; break; // MAYBE IT'S FALSE ?????
 
 			default:

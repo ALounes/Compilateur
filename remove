@@ -1,9 +1,10 @@
 #! /bin/bash
 clear
 rm -f *~
-rm -f evm asm ast
+rm -f evm asm ast res.dot res.pngls
 rm -f resultat_e1.txt
 rm -f resultat_e2.txt
 rm -f erreur.txt
+rm -f infile.bin
 clear
 echo Remove Done ....

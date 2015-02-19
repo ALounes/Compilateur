@@ -20,7 +20,7 @@ nodeType *createNumericNode(float v)
 	}	 
 
 	p->type = typeNumeric ;
-	p->digraphNode = -1; // POUR DOT ??? QUE FAIRE ?
+	p->digraphNode = -1; 
 	p->t_numeric.valeur = v ;
 	
 	return p;
@@ -45,14 +45,12 @@ nodeType *createOperatorNode(int oper, int nops, ...)
  
 	// Le noeud est de type operateur 
 	p->type = typeOperator ;
-	p->digraphNode = -1; // POUR DOT ??? QUE FAIRE ?
-
+	p->digraphNode = -1; 
 
 	// affectation de la valeur de l'operateur 
 	p->t_oper.oper = oper;
 	// affectation du nombre de fils (2?)
 	p->t_oper.nOperands = nops;
-
 
 	// alocation memoire d'un tableau de pointeur sur des noeuds
 	p->t_oper.op = (nodeType**)malloc(nops*sizeof(nodeType*));
@@ -84,7 +82,7 @@ void generateAsmRec(nodeType *n, FILE *fout)
 	switch(n->type)
 	{
 		case typeNumeric :
-			fprintf(fout, "\tpush %f\n", n->t_numeric.valeur);
+			fprintf(fout, "\tpushr %f\n", n->t_numeric.valeur);
 			break;
 	
 		case typeOperator :
@@ -304,15 +302,16 @@ void generateDigraph(nodeType *n)
    generateDigraphEdges(n,fout);
    fprintf(fout, "}\n");
    fclose(fout);
+	system("dot -Tpng res.dot -o res.png");
 }
 
 // La encore cadeau...
 int main(int argc, char **argv)
 {
-	nodeType *n0=createNumericNode(1.23);
+	nodeType *n0=createNumericNode(66.23);
 	nodeType *n1=createNumericNode(4.56);
 	nodeType *n2=createNumericNode(7.89);
-	nodeType *n3=createOperatorNode(OPER_ADD,2,n0,n1);
+	nodeType *n3=createOperatorNode(OPER_MULT,2,n0,n1);
 	nodeType *n4=createOperatorNode(OPER_ADD,2,n3,n2);
 	nodeType *n5=createOperatorNode(OPER_OUTPUT,1,n4);
 	generateAsm(n5,"res.asm");
