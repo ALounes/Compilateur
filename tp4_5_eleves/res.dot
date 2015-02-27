@@ -1,69 +1,57 @@
 digraph {
 	A000 [label="reserve_space"]
 	A001 [label="a"]
-	A002 [label="1.000000"]
+	A002 [label="0.000000"]
 	A003 [label="="]
-	A004 [label="b"]
-	A005 [label="2.000000"]
-	A006 [label="1.000000"]
-	A007 [label="+"]
-	A008 [label="="]
-	A009 [label=";"]
-	A010 [label="c"]
-	A011 [label="3.000000"]
-	A012 [label="1.000000"]
-	A013 [label="+"]
-	A014 [label="="]
-	A015 [label=";"]
+	A004 [label="a"]
+	A005 [label="1.000000"]
+	A006 [label="<"]
+	A007 [label="a"]
+	A008 [label="write"]
+	A009 [label="3.000000"]
+	A010 [label="write"]
+	A011 [label="if"]
+	A012 [label=";"]
+	A013 [label="a"]
+	A014 [label="2.000000"]
+	A015 [label="<"]
 	A016 [label="a"]
-	A017 [label="write"]
-	A018 [label=";"]
-	A019 [label="b"]
-	A020 [label="write"]
-	A021 [label=";"]
-	A022 [label="c"]
-	A023 [label="write"]
-	A024 [label=";"]
-	A025 [label="a"]
-	A026 [label="5.000000"]
-	A027 [label="="]
-	A028 [label=";"]
-	A029 [label="a"]
-	A030 [label="write"]
-	A031 [label=";"]
-	A032 [label="main"]
-	A033 [label=";"]
-	A033 -> A000
-	A033 -> A032
-	A032 -> A031
-	A031 -> A028
-	A031 -> A030
-	A028 -> A024
-	A028 -> A027
-	A024 -> A021
-	A024 -> A023
-	A021 -> A018
-	A021 -> A020
-	A018 -> A015
-	A018 -> A017
-	A015 -> A009
-	A015 -> A014
-	A009 -> A003
-	A009 -> A008
+	A017 [label="a"]
+	A018 [label="1.000000"]
+	A019 [label="+"]
+	A020 [label="="]
+	A021 [label="a"]
+	A022 [label="write"]
+	A023 [label=";"]
+	A024 [label="while"]
+	A025 [label=";"]
+	A026 [label="main"]
+	A027 [label=";"]
+	A027 -> A000
+	A027 -> A026
+	A026 -> A025
+	A025 -> A012
+	A025 -> A024
+	A012 -> A003
+	A012 -> A011
 	A003 -> A001
 	A003 -> A002
-	A008 -> A004
+	A011 -> A006
+	A011 -> A008
+	A011 -> A010
+	A006 -> A004
+	A006 -> A005
 	A008 -> A007
-	A007 -> A005
-	A007 -> A006
-	A014 -> A010
-	A014 -> A013
-	A013 -> A011
-	A013 -> A012
-	A017 -> A016
-	A020 -> A019
+	A010 -> A009
+	A024 -> A015
+	A024 -> A023
+	A015 -> A013
+	A015 -> A014
+	A023 -> A020
 	A023 -> A022
-	A027 -> A025
-	A027 -> A026
-	A030 -> A029
+	A020 -> A016
+	A020 -> A019
+	A019 -> A017
+	A019 -> A018
+	A022 -> A021
 }

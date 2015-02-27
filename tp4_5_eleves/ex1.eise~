@@ -1,0 +1,14 @@
+program ex2;
+
+var a;
+
+begin
+   a = 0;
+   if a<1 then
+	write a
+	else
+	write 3;
+	
+	while a
+	
+end.

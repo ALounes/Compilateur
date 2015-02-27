@@ -5,7 +5,7 @@
 int countDigraph;
 
 // Cette variable permet de declarer des etiquettes a la volee
-int currentLabel;
+int currentLabel = 0;
 
 nodeType *createNumericNode(float v)
 {
@@ -73,7 +73,8 @@ nodeType *createIdentifierNode(char *id, int funcNum, int index)
 void generateAsmRec(nodeType *n, FILE *fout)
 {
 	int label1, label2;
-
+   label1 = currentLabel;
+   
 	if (n==NULL)
 		return;
 
@@ -130,12 +131,36 @@ void generateAsmRec(nodeType *n, FILE *fout)
 					case OPER_WHILE:
 
 							// Question 6) ajouter le code necessaire
-
+						currentLabel++;
+                  fprintf(fout,"L_while_%d:\n",label1);
+                  generateAsmExpression(n->t_oper.op[0],fout);
+                  fprintf(fout,"\tjf Next_while_%d\n",label1);
+                  generateAsmRec(n->t_oper.op[1],fout);
+                  fprintf(fout, "\tjp L_while_%d\n", label1);
+                  fprintf(fout, "Next_while_%d:\n", label1);
+                  
+                  
 						break;
 					case OPER_IF:
 
 							// Question 7) ajouter le code necessaire
-
+                  currentLabel++;
+                  generateAsmExpression(n->t_oper.op[0],fout); //Condition
+                  if (n->t_oper.nOperands == 2 )  //Cas If/Then
+                  {
+                     fprintf(fout, "\tjf Next_if_%d\n", label1);
+                     generateAsmRec(n->t_oper.op[1],fout);     //Then
+                     fprintf(fout, "Next_if_%d:\n", label1);      //End If
+                  }
+                  else {
+                     fprintf(fout, "\tjf elsif%d\n", label1);
+                     generateAsmRec(n->t_oper.op[1],fout);  //Then
+                     fprintf(fout, "\tjp Next_if_%d\n", label1);
+                     fprintf(fout, "elsif%d\n", label1);
+                     generateAsmRec(n->t_oper.op[2],fout);  //Else
+                     fprintf(fout, "Next_if_%d:\n", label1);
+                  }
+                  
 						break;
 					default:
 						break;
