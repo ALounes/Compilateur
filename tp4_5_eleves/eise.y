@@ -104,14 +104,14 @@ set_type_declaration_globales :
 	;
 
 set_type_declaration_formels : 
-		{ 
+		{
 			typeDeclaration=TYPE_PARAMETRE; 
 			printf("typeDeclaration=TYPE_PARAMETRE\n");
 		}
 	;
 
 set_type_declaration_locales : 
-		{ 
+		{
 			typeDeclaration=TYPE_VARIABLE_LOCALE; 
 			printf("typeDeclaration=TYPE_VARIABLE_LOCALE\n");
 		}
