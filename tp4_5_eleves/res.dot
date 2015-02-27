@@ -4,54 +4,60 @@ digraph {
 	A002 [label="0.000000"]
 	A003 [label="="]
 	A004 [label="a"]
-	A005 [label="1.000000"]
-	A006 [label="<"]
-	A007 [label="a"]
-	A008 [label="write"]
-	A009 [label="3.000000"]
-	A010 [label="write"]
-	A011 [label="if"]
+	A005 [label="a"]
+	A006 [label="1.000000"]
+	A007 [label="+"]
+	A008 [label="="]
+	A009 [label=";"]
+	A010 [label="a"]
+	A011 [label="write"]
 	A012 [label=";"]
-	A013 [label="a"]
-	A014 [label="2.000000"]
-	A015 [label="<"]
+	A013 [label="1.000000"]
+	A014 [label="write"]
+	A015 [label=";"]
 	A016 [label="a"]
-	A017 [label="a"]
-	A018 [label="1.000000"]
-	A019 [label="+"]
-	A020 [label="="]
-	A021 [label="a"]
-	A022 [label="write"]
-	A023 [label=";"]
-	A024 [label="while"]
-	A025 [label=";"]
-	A026 [label="main"]
-	A027 [label=";"]
-	A027 -> A000
-	A027 -> A026
-	A026 -> A025
-	A025 -> A012
-	A025 -> A024
-	A012 -> A003
+	A017 [label="4.000000"]
+	A018 [label="<"]
+	A019 [label="a"]
+	A020 [label="a"]
+	A021 [label="1.000000"]
+	A022 [label="+"]
+	A023 [label="="]
+	A024 [label="a"]
+	A025 [label="write"]
+	A026 [label=";"]
+	A027 [label="while"]
+	A028 [label=";"]
+	A029 [label="main"]
+	A030 [label=";"]
+	A030 -> A000
+	A030 -> A029
+	A029 -> A028
+	A028 -> A015
+	A028 -> A027
+	A015 -> A012
+	A015 -> A014
+	A012 -> A009
 	A012 -> A011
+	A009 -> A003
+	A009 -> A008
 	A003 -> A001
 	A003 -> A002
-	A011 -> A006
-	A011 -> A008
-	A011 -> A010
-	A006 -> A004
-	A006 -> A005
+	A008 -> A004
 	A008 -> A007
-	A010 -> A009
-	A024 -> A015
-	A024 -> A023
-	A015 -> A013
-	A015 -> A014
-	A023 -> A020
+	A007 -> A005
+	A007 -> A006
+	A011 -> A010
+	A014 -> A013
+	A027 -> A018
+	A027 -> A026
+	A018 -> A016
+	A018 -> A017
+	A026 -> A023
+	A026 -> A025
+	A023 -> A019
 	A023 -> A022
-	A020 -> A016
-	A020 -> A019
-	A019 -> A017
-	A019 -> A018
+	A022 -> A020
 	A022 -> A021
+	A025 -> A024
 }

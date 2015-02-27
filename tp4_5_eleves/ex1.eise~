@@ -4,11 +4,15 @@ var a;
 
 begin
    a = 0;
-   if a<1 then
-	write a
-	else
-	write 3;
+   
+	a = a + 1;
+	write a;
 	
-	while a
+	write 1;
+	while a < 2 do
+	   begin
+	      a = a + 1;
+	      write a;
+	   end;
 	
 end.

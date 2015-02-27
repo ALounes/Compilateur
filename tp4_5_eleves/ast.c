@@ -90,7 +90,7 @@ void generateAsmRec(nodeType *n, FILE *fout)
 							// Question 4) ajouter le code necessaire
 
                      fprintf(fout,"\tpush %d\n",((n->t_oper.op[0])->t_identifier).index);
-						   generateAsmRec(n->t_oper.op[1],fout);
+						   generateAsmExpression(n->t_oper.op[1],fout);
 						   fprintf(fout,"\tmove 1\n");
                                                
                }
@@ -108,7 +108,7 @@ void generateAsmRec(nodeType *n, FILE *fout)
 					case OPER_RESERVE_SPACE:
 
 						// Question 13) Ajouter le code necessaire
-
+                  fprintf(fout,"\tinc %d\n",table_nbre_variables[getFunctionNum()]);
 						break;
 					case OPER_MAIN:
 						fprintf(fout,"main:\n");
@@ -123,8 +123,9 @@ void generateAsmRec(nodeType *n, FILE *fout)
 						break;
 					case OPER_DEF_FONCTION:
 						{
-
 							// Question 8) ajouter le code necessaire
+							fprintf(fout,"%s\n",n->t_oper.op[0]);
+							generateAsmRec(n->t_oper.op[1],fout);
 
 						}
 						break;
@@ -156,7 +157,7 @@ void generateAsmRec(nodeType *n, FILE *fout)
                      fprintf(fout, "\tjf Else_if_%d\n", label1);
                      generateAsmRec(n->t_oper.op[1],fout);  //Then
                      fprintf(fout, "\tjp Next_if_%d\n", label1);
-                     fprintf(fout, "Else_if_%d\n", label1);
+                     fprintf(fout, "Else_if_%d:\n", label1);
                      generateAsmRec(n->t_oper.op[2],fout);  //Else
                      fprintf(fout, "Next_if_%d:\n", label1);
                   }
@@ -189,7 +190,7 @@ void generateAsmExpression(nodeType *n, FILE *fout)
                         {
 
 				// Question 5) Ajouter le code necessaire
-                                 fprintf(fout,"\tpush\t%d\n",n->t_identifier.index);
+                                 fprintf(fout,"\tpush %d\n",n->t_identifier.index);
                                  fprintf(fout,"\tcopy 1\t\n");
 			               }
                         break;

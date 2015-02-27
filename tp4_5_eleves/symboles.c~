@@ -32,7 +32,7 @@ int est_deja_declare(int func, char *ident)
    
    for (i = 0; i < table_nbre_variables[func] ; i++) {
       if ( strcmp(table_ident_fonctions[func][i].ident, ident) == 0 ) {
-	      return ident;
+	      return i;
 	   }
    }
 
@@ -68,9 +68,24 @@ void print_table_fonctions()
 void ajouter_variable(int func, char *ident, int typv)
 {
 	// Question 3) Ajouter le code necessaire
+	
+	if (typv == TYPE_VARIABLE_GLOBALE)
+   {
+      table_nbre_variables_globales[NBRE_FONCTIONS_MAX]++;
+   }
+   if (typv == TYPE_VARIABLE_LOCALE)
+   {
+      table_nbre_variables_locales[NBRE_FONCTIONS_MAX]++;
+   }
+   if (typv == TYPE_PARAMETRE)
+   {
+      table_nbre_formels[NBRE_FONCTIONS_MAX]++;
+   }
 	table_ident_fonctions[currentFunction][table_nbre_variables[currentFunction]].funcNum = -1;
 	table_ident_fonctions[currentFunction][table_nbre_variables[currentFunction]].ident = strdup(ident);
 	table_ident_fonctions[currentFunction][table_nbre_variables[currentFunction]].typv  = typv;
+   
+	
 
 	table_nbre_variables[currentFunction]++;
 }

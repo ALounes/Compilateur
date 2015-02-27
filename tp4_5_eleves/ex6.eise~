@@ -2,7 +2,7 @@ program ex2;
 
 var a, b, c, d;
 
-function f1(var n);
+function f1(numeric : var n);
 var n1, n2;
 begin
 	return n+100;
