@@ -163,7 +163,7 @@ void generateAsmExpression(nodeType *n, FILE *fout)
 
 				// Question 5) Ajouter le code necessaire
                                  fprintf(fout,"\tpush\t%f\n",n->t_identifier.index);
-			               }
+			}
                         break;
                 case typeOperator:
                         {
