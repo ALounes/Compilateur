@@ -15,12 +15,22 @@ void reset_index_table_nbre_variables(int func)
 
 void init_table_symboles()
 {
-	// Question 1) Ajouter le code necessaire pour initialiser la table des symboles
+   int i;
+	for (i = 0; i < NBRE_FONCTIONS_MAX; i++)  {
+	   table_nbre_variables[i] = 0;
+	}
 }
 
 int est_deja_declare(int func, char *ident)
 {
-	// Question 2) Ajouter le code necessaires
+   int i;
+   
+   for (i = 0; i < table_nbre_variables[func] ; i++) {
+      if ( strcmp(table_ident_fonctions[func][i].ident, ident) == 0 ) {
+	      return 1;
+	   }
+   }
+
 	return 0;
 }
 
