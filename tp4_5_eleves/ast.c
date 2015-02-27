@@ -88,7 +88,7 @@ void generateAsmRec(nodeType *n, FILE *fout)
 
 							// Question 4) ajouter le code necessaire
 
-                     generateAsmExpression(n->t_oper.op[0],fout);
+                     fprintf(fout,"\tpush %d\n",((n->t_oper.op[0])->t_identifier).index);
 						   generateAsmRec(n->t_oper.op[1],fout);
 						   fprintf(fout,"\tmove 1\n");
                                                
@@ -164,7 +164,8 @@ void generateAsmExpression(nodeType *n, FILE *fout)
                         {
 
 				// Question 5) Ajouter le code necessaire
-                                 fprintf(fout,"\tpush\t%f\n",n->t_identifier.index);
+                                 fprintf(fout,"\tpush\t%d\n",n->t_identifier.index);
+                                 fprintf(fout,"\tcopy 1\t\n");
 			               }
                         break;
                 case typeOperator:
@@ -248,7 +249,7 @@ void generateDigraphNameNode(nodeType *n,FILE *fout)
 
 // Question 11) Tout le code suivant a ete commente car non teste. Le modifier pour generer le fichier .dot correct
 
-/*
+
         if (n==NULL)
                 return;
 
@@ -391,7 +392,7 @@ void generateDigraphNameNode(nodeType *n,FILE *fout)
                         }
                         break;
         }
-*/
+
 }
 
 void generateDigraphEdges(nodeType *n,FILE *fout)
@@ -460,7 +461,7 @@ void generateDigraph(nodeType *n)
 
 // Question 12) Tout le code suivant a ete commente car non teste. Le modifier pour generer le fichier .dot correct
 
-/*
+
 	FILE *fout;
 
 	fout=fopen("res.dot","w");
@@ -473,5 +474,5 @@ void generateDigraph(nodeType *n)
 	fprintf(fout,"}\n");
 	fclose(fout);
 	system("dot -Tpng res.dot -o res.png");
-*/
+
 }

@@ -276,7 +276,7 @@ int main(void) {
 	print_table_symb(0);
 	print_table_fonctions();
 	//printf("generateDigraph\n");
-	//generateDigraph(programRoot);
+	generateDigraph(programRoot);
 	//printf("generateAsm\n");
 	generateAsm(programRoot,"res.asm");
     	return 0;

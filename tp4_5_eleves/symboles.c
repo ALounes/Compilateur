@@ -32,11 +32,11 @@ int est_deja_declare(int func, char *ident)
    
    for (i = 0; i < table_nbre_variables[func] ; i++) {
       if ( strcmp(table_ident_fonctions[func][i].ident, ident) == 0 ) {
-	      return 1;
+	      return i;
 	   }
    }
 
-	return 0;
+	return -1;
 }
 
 void print_current_table_symb()

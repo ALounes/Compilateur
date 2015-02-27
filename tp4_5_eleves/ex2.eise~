@@ -10,5 +10,4 @@ begin
 	write b;
 	write c;
 	a=5;
-	write a;
 end.

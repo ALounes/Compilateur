@@ -199,8 +199,8 @@ instruction : instruction_composee
 	| return_instruction
 	| appel_fonction 
 	| affectation
-        | if_instruction
-        | while_instruction
+   | if_instruction
+   | while_instruction
 	;
 
 if_instruction : T_IF expr T_THEN instruction %prec IFX { $$=createOperatorNode(OPER_IF,2,$2,$4); }
