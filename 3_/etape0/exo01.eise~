@@ -1,0 +1,16 @@
+program ex1;
+
+begin
+	begin
+		skip;
+	end;
+	begin
+		skip;
+		begin
+			begin
+				skip;
+			end;
+			skip;
+		end;
+	end;
+end.

@@ -1,0 +1,5 @@
+program ex1;
+
+begin
+	write 1 < 2;
+end.
