@@ -15,7 +15,7 @@ void reset_index_table_nbre_variables(int func)
 
 void init_table_symboles()
 {
-	// Question 1) Ajouter le code necessaire pour initialiser la table des symboles
+	// Question 1) Ajouter le code necessaire pour initialiser la table des 
 }
 
 int est_deja_declare(int func, char *ident)
@@ -53,6 +53,11 @@ void print_table_fonctions()
 void ajouter_variable(int func, char *ident, int typv)
 {
 	// Question 3) Ajouter le code necessaire
+	table_ident_fonctions[currentFunction][table_nbre_variables[currentFunction]].func  = func;
+	table_ident_fonctions[currentFunction][table_nbre_variables[currentFunction]].ident = strdup(ident);
+	table_ident_fonctions[currentFunction][table_nbre_variables[currentFunction]].typc  = typv;
+
+	table_nbre_variables[currentFunction]++;
 }
 
 void ajouter_table_fonctions(int index,int funcNum)
