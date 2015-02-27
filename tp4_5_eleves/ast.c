@@ -84,13 +84,15 @@ void generateAsmRec(nodeType *n, FILE *fout)
 				switch (n->t_oper.oper)
 				{
 					case OPER_ASSIGN:
-                                                {
+               {
 
 							// Question 4) ajouter le code necessaire
+
                      generateAsmExpression(n->t_oper.op[0],fout);
 						   generateAsmRec(n->t_oper.op[1],fout);
 						   fprintf(fout,"\tmove 1\n");
-                                                }
+                                               
+               }
 						break;
 					case OPER_SEQUENCE:
 						generateAsmRec(n->t_oper.op[0],fout);
