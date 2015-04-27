@@ -1,7 +1,0 @@
-program ex1;
-
-begin
-	begin
-		skip;
-	end;
-end.

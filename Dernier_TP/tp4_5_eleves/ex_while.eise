@@ -1,0 +1,10 @@
+program ex_while;
+
+
+begin
+	while (10 < 42) do
+		begin
+			write 4;
+			write 2;
+		end;
+end.

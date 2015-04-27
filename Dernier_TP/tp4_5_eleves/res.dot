@@ -1,0 +1,53 @@
+digraph {
+	A000 [label="reserve_space"]
+	A001 [label="4.000000"]
+	A002 [label="1.000000"]
+	A003 [label=";"]
+	A004 [label="n"]
+	A005 [label="x"]
+	A006 [label="+"]
+	A007 [label="write"]
+	A008 [label="123.000000"]
+	A009 [label="write"]
+	A010 [label=";"]
+	A011 [label="def_fonction"]
+	A012 [label="666.000000"]
+	A013 [label="write"]
+	A014 [label="f0"]
+	A015 [label="2.000000"]
+	A016 [label="1.000000"]
+	A017 [label=";"]
+	A018 [label="appel fonc"]
+	A019 [label=";"]
+	A020 [label="444.000000"]
+	A021 [label="write"]
+	A022 [label=";"]
+	A023 [label="main"]
+	A024 [label=";"]
+	A025 [label=";"]
+	A025 -> A000
+	A025 -> A024
+	A024 -> A011
+	A024 -> A023
+	A011 -> A003
+	A011 -> A010
+	A003 -> A001
+	A003 -> A002
+	A010 -> A007
+	A010 -> A009
+	A007 -> A006
+	A006 -> A004
+	A006 -> A005
+	A009 -> A008
+	A023 -> A022
+	A022 -> A019
+	A022 -> A021
+	A019 -> A013
+	A019 -> A018
+	A013 -> A012
+	A018 -> A014
+	A018 -> A017
+	A017 -> A015
+	A017 -> A016
+	A021 -> A020
+}

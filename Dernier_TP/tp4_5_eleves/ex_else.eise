@@ -1,0 +1,12 @@
+program ex_else;
+
+begin
+	if 3 < 2 then
+	begin
+		write 1 + 3;
+	end
+	else
+	begin
+		write 1;
+	end;
+end.

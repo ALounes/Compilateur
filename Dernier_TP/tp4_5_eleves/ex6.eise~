@@ -1,0 +1,15 @@
+program ex2;
+
+var a,b,c,d;
+
+function f0(n,x);
+begin
+	write n;
+	write x;
+end;
+
+begin
+	write 666;
+	f0(2,1);
+	write 444;
+end.

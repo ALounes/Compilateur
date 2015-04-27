@@ -1,0 +1,10 @@
+program ex2;
+
+function courgette();
+begin
+	write 5;
+end;
+
+begin
+	courgette(1);
+end.
